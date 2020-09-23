@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Entity\Role;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -16,58 +18,90 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"user"})
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @ORM\Column(nullable=false)
+     * @Groups({"user"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @ORM\Column(nullable=false)
+     * @Groups({"list"})
      */
     private $password;
 
     /**
      * @ORM\OneToOne(targetEntity=Artisan::class, mappedBy="user", cascade={"persist", "remove"})
+     * @Groups({"user"})
      */
     private $artisan;
 
     /**
      * @ORM\OneToMany(targetEntity=Ad::class, mappedBy="user")
+     * @Groups({"user"})
      */
     private $ad;
 
     /**
-     * @ORM\OneToOne(targetEntity=Zip::class, mappedBy="code", cascade={"persist", "remove"})
-     */
-    private $zip;
-
-    /**
      * @ORM\OneToOne(targetEntity=Image::class, mappedBy="user", cascade={"persist", "remove"})
+     * @Groups({"user"})
      */
     private $image;
 
     /**
      * @ORM\OneToMany(targetEntity=Conversation::class, mappedBy="user")
+     * @Groups({"user"})
      */
     private $conversation;
 
     /**
      * @ORM\ManyToMany(targetEntity=Message::class, mappedBy="user")
+     * @Groups({"user"})
      */
     private $message;
 
     /**
-     * @ORM\OneToOne(targetEntity=Role::class, mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(nullable=false)
+     * @Groups({"user"})
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(nullable=false)
+     * @Groups({"user"})
+     */
+    private $lastName;
+
+    /**
+     * @ORM\Column(type="string")
+     * @ORM\Column(nullable=false)
+     * @Groups({"user"})
+     */
+    private $birthday;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user"})
      */
     private $role;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Location::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user"})
+     */
+    private $location;
+
 
     public function __construct()
     {
@@ -83,12 +117,12 @@ class User
 
     public function getName(): ?string
     {
-        return $this->name;
+        return $this->firstName;
     }
 
-    public function setName(string $name): self
+    public function setFirstName(string $firstName): self
     {
-        $this->name = $name;
+        $this->firstName = $firstName;
 
         return $this;
     }
@@ -160,23 +194,6 @@ class User
             if ($ad->getUser() === $this) {
                 $ad->setUser(null);
             }
-        }
-
-        return $this;
-    }
-
-    public function getZip(): ?Zip
-    {
-        return $this->zip;
-    }
-
-    public function setZip(Zip $zip): self
-    {
-        $this->zip = $zip;
-
-        // set the owning side of the relation if necessary
-        if ($zip->getCode() !== $this) {
-            $zip->setCode($this);
         }
 
         return $this;
@@ -258,20 +275,57 @@ class User
         return $this;
     }
 
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getBirthday(): ?string
+    {
+        return $this->birthday;
+    }
+
+    public function setBirthday(string $birthday): self
+    {
+        $this->birthday = $birthday;
+
+        return $this;
+    }
+
     public function getRole(): ?Role
     {
         return $this->role;
     }
 
-    public function setRole(Role $role): self
+    public function setRole(?Role $role): self
     {
         $this->role = $role;
 
-        // set the owning side of the relation if necessary
-        if ($role->getUser() !== $this) {
-            $role->setUser($this);
-        }
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): self
+    {
+        $this->location = $location;
 
         return $this;
     }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
 }

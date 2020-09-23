@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Role;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method Role|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,11 +15,27 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class RoleRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $manager;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager)
     {
         parent::__construct($registry, Role::class);
+        $this->manager = $manager;
     }
 
+
+    public function saveRole($name)
+    {
+        $newRole = new Role();
+
+        $newRole
+            ->setName($name);
+
+        $this->manager->persist($newRole);
+        $this->manager->flush();
+
+        return true;
+    }
     // /**
     //  * @return Role[] Returns an array of Role objects
     //  */

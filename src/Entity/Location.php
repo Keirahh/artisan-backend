@@ -2,34 +2,40 @@
 
 namespace App\Entity;
 
-use App\Repository\RoleRepository;
+use App\Repository\LocationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass=RoleRepository::class)
+ * @ORM\Entity(repositoryClass=LocationRepository::class)
  */
-class Role
+class Location
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"role", "user"})
+     * @Groups({"location"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"role", "user"})
+     * @Groups({"location"})
      */
-    private $name;
+    private $city;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="role")
-     * @Groups({"role"})
+     * @ORM\Column(type="integer")
+     * @Groups({"location"})
+     */
+    private $zip_code;      
+
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="location")
+     * @Groups({"location"})
      */
     private $users;
 
@@ -38,20 +44,31 @@ class Role
         $this->users = new ArrayCollection();
     }
 
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getCity(): ?string
     {
-        return $this->name;
+        return $this->city;
     }
 
-    public function setName(string $name): self
+    public function setCity(string $city): self
     {
-        $this->name = $name;
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getZipCode(): ?int
+    {
+        return $this->zip_code;
+    }
+
+    public function setZipCode(int $zip_code): self
+    {
+        $this->zip_code = $zip_code;
 
         return $this;
     }
@@ -68,7 +85,7 @@ class Role
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
-            $user->setRole($this);
+            $user->setLocation($this);
         }
 
         return $this;
@@ -79,8 +96,8 @@ class Role
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
             // set the owning side to null (unless already changed)
-            if ($user->getRole() === $this) {
-                $user->setRole(null);
+            if ($user->getLocation() === $this) {
+                $user->setLocation(null);
             }
         }
 
