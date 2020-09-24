@@ -95,13 +95,6 @@ class User
      */
     private $role;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Location::class, inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user"})
-     */
-    private $location;
-
 
     public function __construct()
     {
@@ -287,6 +280,11 @@ class User
         return $this;
     }
 
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
     public function getBirthday(): ?string
     {
         return $this->birthday;
@@ -311,21 +309,6 @@ class User
         return $this;
     }
 
-    public function getLocation(): ?Location
-    {
-        return $this->location;
-    }
 
-    public function setLocation(?Location $location): self
-    {
-        $this->location = $location;
-
-        return $this;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
 
 }
