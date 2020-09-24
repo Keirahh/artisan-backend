@@ -43,7 +43,7 @@ class LocationController extends ApiController
         //     throw new NotFoundHttpException('Expecting mandatory parameters!');
         // }
 
-        if ($this->locationRepository->saveLocation($city, $zip_code,)) {
+        if ($this->locationRepository->saveLocation($city, $zip_code)) {
             return new JsonResponse(['status' => 'Location created!'], Response::HTTP_CREATED);
         }
     }
