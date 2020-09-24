@@ -4,13 +4,18 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
+
 
 class ApiController
 {
+
+    private $serializer;
+
+    public function __construct(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
+    }
 
     /**
      * @var integer HTTP status code - 200 (OK) by default
@@ -82,45 +87,13 @@ class ApiController
         return $this->setStatusCode(401)->respondWithErrors($message);
     }
 
-    public function serializeDoctrine($response, $entity): Response
+    public function serializeDoctrine($entity, $groups)
     {
-        $serializer = new Serializer(array(new GetSetMethodNormalizer()), array('json' => new JsonEncoder()));
-        $json = $serializer->serialize($response, 'json', [
-            'groups' => [$entity]
+        $json = $this->serializer->serialize($entity, 'json', [
+            'groups' => [$groups]
         ]);
-
-        return new Response($json, 200, [
-            'Content-Type' => 'application/json'
-        ]);
+        $response = new Response($json);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
-
-    // public function getUser(User $user, UserRepository $userRepository, SerializerInterface $serializer)
-    // {
-    //     $user = $userRepository->find($user->getId());
-    //     $json = $serializer->serialize($user, 'json', [
-    //         'groups' => ['user']
-    //     ]);
-
-    //     return new Response($json, 200, [
-    //         'Content-Type' => 'application/json'
-    //     ]);
-    // }
-
-    // public function serializeDoctrine($response, $entity): Response
-    // {
-
-    //     $serializer = new Serializer(array(new GetSetMethodNormalizer()), array('json' => new JsonEncoder()));
-    //     $json = $serializer->serialize($response, 'json', [
-    //         'groups' => [$entity]
-    //     ]);
-    //     // $json = $serializer->serialize($response, 'json', [
-    //     //     'circular_reference_handler' => function ($response) {
-    //     //         return $response;
-    //     //     }
-    //     // ]);
-
-    //     $response = new Response($json);
-    //     $response->headers->set('Content-Type', 'application/json');
-    //     return $response;
-    // }
 }

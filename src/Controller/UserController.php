@@ -13,12 +13,11 @@ use Symfony\Component\Serializer\SerializerInterface;
 class UserController extends ApiController
 {
     private $userRepository;
-    private $user;
 
-    public function __construct(UserRepository $userRepository, User $user)
+    public function __construct(UserRepository $userRepository, SerializerInterface $serializer)
     {
         $this->userRepository = $userRepository;
-        $this->user = $user;
+        parent::__construct($serializer);
     }
 
     /**
@@ -27,7 +26,6 @@ class UserController extends ApiController
     public function addUser(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-
 
         $dataset = ['firstName', 'lastName', 'email', 'password', 'birthday', 'role', 'location'];
 
@@ -54,39 +52,13 @@ class UserController extends ApiController
         }
     }
 
-    // /**
-    //  * @Route("/user/{id}", name="get_user", methods={"GET"})
-    //  */
-    // public function getUser(User $user, UserRepository $userRepository, SerializerInterface $serializer)
-    // {
-    //     $user = $userRepository->find($user->getId());
-
-
-    //     $json = $serializer->serialize($user, 'json', [
-    //         'groups' => ['user']
-    //     ]);
-
-    //     return new Response($json, 200, [
-    //         'Content-Type' => 'application/json'
-    //     ]);
-    // }
-
    /**
      * @Route("/user/{id}", name="get_user", methods={"GET"})
      */
     public function getUser($id): Response
     {
-        return $this->serializeDoctrine($this->userRepository->find($this->user->getId()), 'user');
+        return $this->serializeDoctrine($this->userRepository->find($id), 'user');
     }
-
-
-    // /**
-    //  * @Route("/user/{id}", name="get_user", methods={"GET"})
-    //  */
-    // public function getUser($id): Response
-    // {
-    //     return $this->serializeDoctrine($this->userRepository->find($id), 'user');
-    // }
 
     public function getEntity($id)
     {

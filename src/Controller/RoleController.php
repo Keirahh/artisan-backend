@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Role;
 use App\Repository\RoleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,10 +16,10 @@ class RoleController extends ApiController
 {
     private $roleRepository;
 
-    public function __construct(RoleRepository $roleRepository)
+    public function __construct(RoleRepository $roleRepository, SerializerInterface $serializer)
     {
         $this->roleRepository = $roleRepository;
-        return $this;
+        parent::__construct($serializer);
     }
 
     /**
@@ -50,13 +49,13 @@ class RoleController extends ApiController
         }
     }
 
-    // /**
-    //  * @Route("/role/{id}", name="get_role", methods={"GET"})
-    //  */
-    // public function getRole($id): Response
-    // {
-    //     return $this->serializeDoctrine($this->roleRepository->find($id),'roles');
-    // }
+    /**
+     * @Route("/role/{id}", name="get_role", methods={"GET"})
+     */
+    public function getRole($id): Response
+    {
+        return $this->serializeDoctrine($this->roleRepository->find($id),'role');
+    }
 
     /**
      * @Route("/roles", name="get_roles", methods={"GET"})
@@ -71,23 +70,4 @@ class RoleController extends ApiController
         return $this->roleRepository->find($id);
     }
 
-
-    /**
-     * @Route("/role/{id}", name="get_role", methods={"GET"})
-     */
-    public function getRole(Role $role, RoleRepository $roleRepository, SerializerInterface $serializer)
-    {
-        $role = $roleRepository->find($role->getId());
-
-        $json = $serializer->serialize($role, 'json', [
-            'groups' => ['user']
-        ]);
-
-        dump($json);
-        die();
-
-        return new Response($json, 200, [
-            'Content-Type' => 'application/json'
-        ]);
-    }
 }

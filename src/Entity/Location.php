@@ -17,25 +17,24 @@ class Location
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"location"})
+     * @Groups({"location","user"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"location"})
+     * @Groups({"location","user"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"location"})
+     * @Groups({"location","user"})
      */
     private $zip_code;      
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="location")
-     * @Groups({"location"})
      */
     private $users;
 
