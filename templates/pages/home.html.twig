@@ -4,5 +4,18 @@
 <p>user</p>
 {{dump(user)}}
 
-<p>location</p>
-{{dump(location)}}
+{{dump(csv)}}
+
+           <form class="form-horizontal" action="" method="post" name="frmCSVImport" id="frmCSVImport"
+                enctype="multipart/form-data">
+                <div class="input-row">
+                    <label class="col-md-4 control-label">Choose CSV
+                        File</label> <input type="file" name="file"
+                        id="file" accept=".csv">
+                    <button type="submit" id="submit" name="import"
+                        class="btn-submit">Import</button>
+                    <br />
+
+                </div>
+
+            </form>
