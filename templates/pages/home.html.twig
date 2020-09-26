@@ -1,10 +1,12 @@
-<h1> Test {{ title }}</h1>
+{# <h1> Test {{ title }}</h1>
 <p>role</p>
 {{dump(role)}}
 <p>user</p>
 {{dump(user)}}
 
-{{dump(csv)}}
+{{dump(csv)}} #}
+
+{{dump(result ~ ' new entities created')}}
 
            <form class="form-horizontal" action="" method="post" name="frmCSVImport" id="frmCSVImport"
                 enctype="multipart/form-data">

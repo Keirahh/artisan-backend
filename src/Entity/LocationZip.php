@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LocationZipRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=LocationZipRepository::class)
@@ -19,6 +20,7 @@ class LocationZip
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"location"})
      */
     private $zip;
 

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LocationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=LocationRepository::class)
@@ -18,24 +19,28 @@ class Location
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=locationZip::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=LocationZip::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"location"})
      */
     private $zip;
 
     /**
-     * @ORM\OneToOne(targetEntity=LocationRegion::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=LocationRegion::class, cascade={"persist", "remove"})
+     * @Groups({"location"})
      */
     private $region;
 
     /**
-     * @ORM\OneToOne(targetEntity=LocationDepartement::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=LocationDepartement::class, cascade={"persist", "remove"})
+     * @Groups({"location"})
      */
     private $departement;
 
     /**
-     * @ORM\OneToOne(targetEntity=LocationCity::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=LocationCity::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"location"})
      */
     private $city;
 
@@ -44,12 +49,12 @@ class Location
         return $this->id;
     }
 
-    public function getZip(): ?locationZip
+    public function getZip(): ?LocationZip
     {
         return $this->zip;
     }
 
-    public function setZip(locationZip $zip): self
+    public function setZip(LocationZip $zip): self
     {
         $this->zip = $zip;
 
