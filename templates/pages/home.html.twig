@@ -1,23 +1,29 @@
-{# <h1> Test {{ title }}</h1>
-<p>role</p>
-{{dump(role)}}
-<p>user</p>
-{{dump(user)}}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		{% block stylesheets %}{% endblock %}
+	</head>
+	<body>
+		{% block body %}
+			{{dump(result ~ ' new entities created')}}
 
-{{dump(csv)}} #}
+			<form class="form-horizontal" action="" method="post" name="frmCSVImport" id="frmCSVImport" enctype="multipart/form-data">
+				<div class="input-row">
+					<label class="col-md-4 control-label">Choose CSV
+						                        File</label>
+					<input type="file" name="file" id="file" accept=".csv">
+					<button type="submit" id="submit" name="import" class="btn-submit">Import</button>
+					<br/>
 
-{{dump(result ~ ' new entities created')}}
+				</div>
 
-           <form class="form-horizontal" action="" method="post" name="frmCSVImport" id="frmCSVImport"
-                enctype="multipart/form-data">
-                <div class="input-row">
-                    <label class="col-md-4 control-label">Choose CSV
-                        File</label> <input type="file" name="file"
-                        id="file" accept=".csv">
-                    <button type="submit" id="submit" name="import"
-                        class="btn-submit">Import</button>
-                    <br />
-
-                </div>
-
-            </form>
+			</form>
+		{% endblock %}
+		{% block javascripts %}{% endblock %}
+	</body>
+</html>
