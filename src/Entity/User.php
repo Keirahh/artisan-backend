@@ -95,6 +95,13 @@ class User
      */
     private $role;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Location::class, inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user, location"})
+     */
+    private $location;
+
 
     public function __construct()
     {
@@ -309,6 +316,15 @@ class User
         return $this;
     }
 
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
 
+    public function setLocation(Location $location): self
+    {
+        $this->location = $location;
 
+        return $this;
+    }
 }

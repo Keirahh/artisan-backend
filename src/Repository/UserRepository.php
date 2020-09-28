@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Controller\LocationController;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use App\Controller\RoleController;
@@ -18,29 +19,29 @@ class UserRepository extends ServiceEntityRepository
 {
     private $manager;
     private $roleController;
-    // private $locationController;
+    private $locationController;
 
-    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager, RoleController $roleController)
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager, RoleController $roleController, LocationController $locationController)
     {
         parent::__construct($registry, User::class);
         $this->manager = $manager;
         $this->roleController = $roleController;
-        // $this->locationController = $locationController;
+        $this->locationController = $locationController;
     }
 
-    public function saveUser($firstName, $lastName, $email, $password, $birthday, $role)
+    public function saveUser($firstName, $lastName, $email, $password, $birthday, $role, $location)
     {
         $newUser = new User();
         $role = $this->roleController->getEntity($role);
-        // $location = $this->locationController->getEntity($location);
+        $location = $this->locationController->getEntity($location);
         $newUser
             ->setFirstName($firstName)
             ->setLastName($lastName)
             ->setEmail($email)
             ->setPassword($password)
             ->setBirthday($birthday)
-            ->setRole($role);
-            // ->setLocation($location);
+            ->setRole($role)
+            ->setLocation($location);
 
         $this->manager->persist($newUser);
         $this->manager->flush();

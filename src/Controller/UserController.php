@@ -27,12 +27,13 @@ class UserController extends ApiController
     {
         $data = json_decode($request->getContent(), true);
 
-        $dataset = ['firstName', 'lastName', 'email', 'password', 'birthday', 'role'];
+        $dataset = ['firstName', 'lastName', 'email', 'password', 'birthday', 'role', 'location'];
 
         foreach ($dataset as $property) {
             if (empty($data[$property])) {
                 throw new NotFoundHttpException('Expecting mandatory parameters! (' . $data[$property] . ')');
             }
+            
         }
 
         $firstName = $data['firstName'];
@@ -41,12 +42,13 @@ class UserController extends ApiController
         $password = $data['password'];
         $birthday = $data['birthday'];
         $role = $data['role'];
+        $location = $data['location'];
 
         // if (empty($firstName) || empty($lastName) || empty($email) || empty($password) || empty($birthday) || empty($role) || empty($zip)) {
         //     throw new NotFoundHttpException('Expecting mandatory parameters!');
         // }
 
-        if ($this->userRepository->saveUser($firstName, $lastName, $email, $password, $birthday, $role)) {
+        if ($this->userRepository->saveUser($firstName, $lastName, $email, $password, $birthday, $role, $location)) {
             return new JsonResponse(['status' => 'User created!'], Response::HTTP_CREATED);
         }
     }

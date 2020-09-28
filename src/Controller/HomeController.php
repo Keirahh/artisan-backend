@@ -39,7 +39,6 @@ class HomeController extends AbstractController
         {
             return $this->render("pages/home.html.twig", array(
                 "title" => $index,
-                // "csv" => $import->importCsv(),
                 "role" => json_decode($this->roleController->getRole(2)->getContent()),
                 "user" => json_decode($this->userController->getUser(1)->getContent()),
                 // "location" => json_decode($this->locationController->getLocation(1)->getContent())

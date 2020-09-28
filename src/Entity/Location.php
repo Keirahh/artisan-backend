@@ -44,6 +44,11 @@ class Location
      */
     private $city;
 
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="location", cascade={"persist", "remove"})
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -93,6 +98,23 @@ class Location
     public function setCity(LocationCity $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+
+        // set the owning side of the relation if necessary
+        if ($user->getLocation() !== $this) {
+            $user->setLocation($this);
+        }
 
         return $this;
     }

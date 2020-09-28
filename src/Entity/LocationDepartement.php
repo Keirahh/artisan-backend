@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LocationDepartementRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=LocationDepartementRepository::class)
@@ -19,11 +20,13 @@ class LocationDepartement
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"location"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"location"})
      */
     private $code;
 
