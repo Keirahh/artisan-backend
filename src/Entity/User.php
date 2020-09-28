@@ -33,7 +33,7 @@ class User
     /**
      * @ORM\Column(type="string", length=255)
      * @ORM\Column(nullable=false)
-     * @Groups({"list"})
+     * @Groups({"user"})
      */
     private $password;
 
@@ -98,7 +98,7 @@ class User
     /**
      * @ORM\OneToOne(targetEntity=Location::class, inversedBy="user", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user, location"})
+     * @Groups({"user"})
      */
     private $location;
 

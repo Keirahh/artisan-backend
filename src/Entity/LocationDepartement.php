@@ -20,13 +20,13 @@ class LocationDepartement
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"location"})
+     * @Groups({"location", "user"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"location"})
+     * @Groups({"location", "user"})
      */
     private $code;
 

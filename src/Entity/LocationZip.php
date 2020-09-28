@@ -20,7 +20,7 @@ class LocationZip
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"location"})
+     * @Groups({"location", "user"})
      */
     private $zip;
 

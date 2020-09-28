@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le :  sam. 26 sep. 2020 à 10:10
+-- Généré le :  lun. 28 sep. 2020 à 13:39
 -- Version du serveur :  5.7.24
 -- Version de PHP :  7.2.19
 
@@ -90,7 +90,8 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20200924122425', '2020-09-24 12:24:44', 437),
 ('DoctrineMigrations\\Version20200924130439', '2020-09-24 13:05:19', 526),
 ('DoctrineMigrations\\Version20200924131402', '2020-09-24 13:14:14', 140),
-('DoctrineMigrations\\Version20200925084436', '2020-09-25 08:44:47', 176);
+('DoctrineMigrations\\Version20200925084436', '2020-09-25 08:44:47', 176),
+('DoctrineMigrations\\Version20200928131218', '2020-09-28 13:12:37', 129);
 
 -- --------------------------------------------------------
 
@@ -76633,8 +76634,8 @@ CREATE TABLE `role` (
 --
 
 INSERT INTO `role` (`id`, `name`) VALUES
-(1, 'artisan'),
-(2, 'particulier');
+(1, 'Particulier'),
+(2, 'Artisan');
 
 -- --------------------------------------------------------
 
@@ -76649,17 +76650,16 @@ CREATE TABLE `user` (
   `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `birthday` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role_id` int(11) NOT NULL,
-  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `location_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `password`, `last_name`, `birthday`, `role_id`, `first_name`) VALUES
-(1, 'johnDoe@email.com', '1234', 'Doe', '26/09/1994', 1, 'John'),
-(2, 'fab.martin@email.com', '1234', 'Martin', '12/03/1972', 1, ''),
-(3, 'fab.martin@email.com', '1234', 'Martin', '12/03/1972', 1, '');
+INSERT INTO `user` (`id`, `email`, `password`, `last_name`, `birthday`, `role_id`, `first_name`, `location_id`) VALUES
+(1, 'johnDoe@email.com', '1234', 'Doe', '26/09/1994', 1, 'John', 12);
 
 --
 -- Index pour les tables déchargées
@@ -76760,6 +76760,7 @@ ALTER TABLE `role`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_8D93D64964D218E` (`location_id`),
   ADD KEY `IDX_8D93D649D60322AC` (`role_id`);
 
 --
@@ -76836,7 +76837,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Contraintes pour les tables déchargées
@@ -76893,6 +76894,7 @@ ALTER TABLE `message_user`
 -- Contraintes pour la table `user`
 --
 ALTER TABLE `user`
+  ADD CONSTRAINT `FK_8D93D64964D218E` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`),
   ADD CONSTRAINT `FK_8D93D649D60322AC` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
 COMMIT;
 

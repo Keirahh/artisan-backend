@@ -15,37 +15,39 @@ class Location
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"location", "user"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=LocationZip::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"location"})
+     * @Groups({"location", "user", "zip"})
      */
     private $zip;
 
     /**
      * @ORM\ManyToOne(targetEntity=LocationRegion::class, cascade={"persist", "remove"})
-     * @Groups({"location"})
+     * @Groups({"location", "user"})
      */
     private $region;
 
     /**
      * @ORM\ManyToOne(targetEntity=LocationDepartement::class, cascade={"persist", "remove"})
-     * @Groups({"location"})
+     * @Groups({"location", "user"})
      */
     private $departement;
 
     /**
      * @ORM\ManyToOne(targetEntity=LocationCity::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"location"})
+     * @Groups({"location", "user"})
      */
     private $city;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="location", cascade={"persist", "remove"})
+     * @Groups({"location"})
      */
     private $user;
 
