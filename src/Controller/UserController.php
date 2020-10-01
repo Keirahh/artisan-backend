@@ -27,6 +27,9 @@ class UserController extends ApiController
     {
         $data = json_decode($request->getContent(), true);
 
+        var_dump($data);
+        die();
+
         $dataset = ['firstName', 'lastName', 'email', 'password', 'birthday', 'role', 'location'];
 
         foreach ($dataset as $property) {
