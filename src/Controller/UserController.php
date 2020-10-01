@@ -21,7 +21,7 @@ class UserController extends ApiController
     }
 
     /**
-     * @Route("/user/add/", name="add_user", methods={"POST"})
+     * @Route("/user/add", name="add_user", methods={"POST"})
      */
     public function addUser(Request $request): JsonResponse
     {
