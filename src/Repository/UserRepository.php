@@ -32,7 +32,7 @@ class UserRepository extends ServiceEntityRepository
         $this->encoder = $encoder;
     }
 
-    public function saveUser($firstName, $lastName, $email, $password, $birthday, $role, $location)
+    public function saveUser($firstName, $lastName, $email, $password, $birthdate, $role, $location)
     {
         $newUser = new User();
         // $encoded = $this->encoder->encodePassword($newUser,$password);
@@ -43,7 +43,7 @@ class UserRepository extends ServiceEntityRepository
             ->setLastName($lastName)
             ->setEmail($email)
             ->setPassword($password)
-            ->setBirthday($birthday)
+            ->setBirthdate($birthdate)
             ->setRole($role)
             ->setLocation($location);
 

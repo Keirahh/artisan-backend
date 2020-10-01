@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields="email", message="Email already taken")
- * @UniqueEntity(fields="username", message="Username already taken")
  */
 class User
 {
@@ -88,7 +87,7 @@ class User
      * @ORM\Column(nullable=false)
      * @Groups({"user"})
      */
-    private $birthday;
+    private $birthdate;
 
     /**
      * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="users")
@@ -294,14 +293,14 @@ class User
         return $this->firstName;
     }
 
-    public function getBirthday(): ?string
+    public function getBirthdate(): ?string
     {
-        return $this->birthday;
+        return $this->birthdate;
     }
 
-    public function setBirthday(string $birthday): self
+    public function setBirthdate(string $birthdate): self
     {
-        $this->birthday = $birthday;
+        $this->birthdate = $birthdate;
 
         return $this;
     }

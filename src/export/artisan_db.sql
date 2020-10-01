@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le :  lun. 28 sep. 2020 à 13:39
+-- Généré le :  jeu. 01 oct. 2020 à 13:05
 -- Version du serveur :  5.7.24
 -- Version de PHP :  7.2.19
 
@@ -45,7 +45,8 @@ CREATE TABLE `artisan` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `siret` int(11) NOT NULL,
-  `activity` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `activity` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `company` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -91,7 +92,9 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20200924130439', '2020-09-24 13:05:19', 526),
 ('DoctrineMigrations\\Version20200924131402', '2020-09-24 13:14:14', 140),
 ('DoctrineMigrations\\Version20200925084436', '2020-09-25 08:44:47', 176),
-('DoctrineMigrations\\Version20200928131218', '2020-09-28 13:12:37', 129);
+('DoctrineMigrations\\Version20200928131218', '2020-09-28 13:12:37', 129),
+('DoctrineMigrations\\Version20201001125035', '2020-10-01 12:50:58', 220),
+('DoctrineMigrations\\Version20201001125332', '2020-10-01 12:53:50', 205);
 
 -- --------------------------------------------------------
 
@@ -76655,13 +76658,6 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Déchargement des données de la table `user`
---
-
-INSERT INTO `user` (`id`, `email`, `password`, `last_name`, `birthday`, `role_id`, `first_name`, `location_id`) VALUES
-(1, 'johnDoe@email.com', '1234', 'Doe', '26/09/1994', 1, 'John', 12);
-
---
 -- Index pour les tables déchargées
 --
 
@@ -76760,8 +76756,8 @@ ALTER TABLE `role`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `UNIQ_8D93D64964D218E` (`location_id`),
-  ADD KEY `IDX_8D93D649D60322AC` (`role_id`);
+  ADD KEY `IDX_8D93D649D60322AC` (`role_id`),
+  ADD KEY `IDX_8D93D64964D218E` (`location_id`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -76837,7 +76833,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Contraintes pour les tables déchargées
