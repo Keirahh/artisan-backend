@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Repository\LocationCityRepository;
 use App\Repository\LocationRepository;
-use App\Repository\LocationZipRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -17,14 +15,10 @@ use Symfony\Component\HttpFoundation\Request;
 class LocationController extends ApiController
 {
     private $locationRepository;
-    private $locationCityRepository;
-    private $locationZipRepository;
 
-    public function __construct(LocationRepository $locationRepository, LocationCityRepository $locationCityRepository, LocationZipRepository $locationZipRepository, SerializerInterface $serializer)
+    public function __construct(LocationRepository $locationRepository, SerializerInterface $serializer)
     {
         $this->locationRepository = $locationRepository;
-        $this->locationCityRepository = $locationCityRepository;
-        $this->locationZipRepository = $locationZipRepository;
 
         parent::__construct($serializer);
     }
@@ -38,7 +32,7 @@ class LocationController extends ApiController
     }
 
     /**
-     * @Route("/{q<\d+>?1}", name="get_locations", methods={"GET"})
+     * @Route("/{q<\d+>?1}/{page<\d+>?1}", name="get_locations", methods={"GET"})
      */
     public function getLocations(Request $request): Response
     {
@@ -50,17 +44,13 @@ class LocationController extends ApiController
             $limit = 10;
             return $this->serializeDoctrine($this->locationRepository->findAllLocations($page, $limit), 'location');
         } else {
-
-            $city = $this->locationCityRepository->findOneBy(['name' => $_GET['q']]);
-            $zip = $this->locationZipRepository->findOneBy(['zip' => $_GET['q']]);
-            // $rst = $this->locationRepository->findBy(['city' => $city], array(),10,200);
-
-            $rst = $this->serializeDoctrine($this->locationRepository->findBy(['city' => $city], null, 10, null), 'city');
-            $rst .= $this->serializeDoctrine($this->locationRepository->findBy(['zip' => $zip], array(), 10, null), 'zip');
-            return new Response($rst, 200, [
-                'Content-Type' => 'application/json'
-            ]);
+            return $this->serializeDoctrine($this->locationRepository->searchLocation($_GET['q']), 'location');
         }
+    }
+
+    public function displayFront()
+    {
+        return $this->locationRepository->searchLocation('nic');
     }
 
     public function getEntity($id)

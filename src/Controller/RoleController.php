@@ -11,7 +11,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 
-
+/**
+ * @Route("/api/role")
+ */
 class RoleController extends ApiController
 {
     private $roleRepository;
@@ -23,7 +25,7 @@ class RoleController extends ApiController
     }
 
     /**
-     * @Route("/role/add/", name="add_role", methods={"POST"})
+     * @Route("/add", name="add_role", methods={"POST"})
      */
     public function addRole(Request $request): JsonResponse
     {
@@ -50,7 +52,7 @@ class RoleController extends ApiController
     }
 
     /**
-     * @Route("/role/{id}", name="get_role", methods={"GET"})
+     * @Route("/{id}", name="get_role", methods={"GET"})
      */
     public function getRole($id): Response
     {

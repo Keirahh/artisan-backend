@@ -18,7 +18,6 @@ class LocationZipRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, LocationZip::class);
     }
-
     // /**
     //  * @return LocationZip[] Returns an array of LocationZip objects
     //  */

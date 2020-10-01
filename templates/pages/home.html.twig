@@ -6,24 +6,23 @@
 			{% block title %}Welcome!
 			{% endblock %}
 		</title>
-		{% block stylesheets %}{% endblock %}
 	</head>
 	<body>
 		{% block body %}
 			{{dump(result ~ ' new entities created')}}
-
 			<form class="form-horizontal" action="" method="post" name="frmCSVImport" id="frmCSVImport" enctype="multipart/form-data">
 				<div class="input-row">
-					<label class="col-md-4 control-label">Choose CSV
-						                        File</label>
+					<label class="col-md-4 control-label">Choose CSV File</label>
 					<input type="file" name="file" id="file" accept=".csv">
 					<button type="submit" id="submit" name="import" class="btn-submit">Import</button>
 					<br/>
-
 				</div>
-
 			</form>
+			{{dump(Location)}}
+			{% for l in Location %}
+				<p>{{l.city.name}}</p>
+				<p>{{l.zip.zip}}</p>
+			{% endfor %}
 		{% endblock %}
-		{% block javascripts %}{% endblock %}
 	</body>
 </html>

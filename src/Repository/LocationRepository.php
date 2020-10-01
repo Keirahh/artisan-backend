@@ -29,6 +29,25 @@ class LocationRepository extends ServiceEntityRepository
             ->setMaxResults($limit);
         return new Paginator($query);
     }
+
+    public function searchLocation($value)
+    {
+        $qb = $this->createQueryBuilder('l');
+        $qb
+            ->leftjoin('l.city', 'c')
+            ->leftjoin('l.zip', 'z')
+            ->leftjoin('l.departement', 'd')
+            ->leftjoin('l.region', 'r')
+            ->orwhere('c.name LIKE :val')
+            ->orWhere('z.zip LIKE :val')
+            ->orWhere('d.name LIKE :val')
+            ->orWhere('r.name LIKE :val')
+            ->orderBy('c.name', 'ASC')
+            ->setParameter('val', $value . "%")
+            ->setMaxResults(10);
+
+        return $qb->getQuery()->getResult();
+    }
     // /**
     //  * @return Location[] Returns an array of Location objects
     //  */

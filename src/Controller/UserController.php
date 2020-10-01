@@ -10,6 +10,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
+
+/**
+ * @Route("/api/user")
+ */
 class UserController extends ApiController
 {
     private $userRepository;
@@ -21,7 +25,7 @@ class UserController extends ApiController
     }
 
     /**
-     * @Route("/user/add", name="add_user", methods={"POST"})
+     * @Route("/add", name="add_user", methods={"POST"})
      */
     public function addUser(Request $request): JsonResponse
     {
@@ -42,17 +46,13 @@ class UserController extends ApiController
         $role = $data['role'];
         $location = $data['location'];
 
-        // if (empty($firstName) || empty($lastName) || empty($email) || empty($password) || empty($birthdate) || empty($role) || empty($zip)) {
-        //     throw new NotFoundHttpException('Expecting mandatory parameters!');
-        // }
-
         if ($this->userRepository->saveUser($firstName, $lastName, $email, $password, $birthdate, $role, $location)) {
             return new JsonResponse(['status' => 'User created!'], Response::HTTP_CREATED);
         }
     }
 
    /**
-     * @Route("/user/{id}", name="get_user", methods={"GET"})
+     * @Route("/{id}", name="get_user", methods={"GET"})
      */
     public function getUser($id): Response
     {
