@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\LocationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -22,7 +24,7 @@ class Location
     /**
      * @ORM\ManyToOne(targetEntity=LocationZip::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"location", "user", "zip"})
+     * @Groups({"location", "user", "zip", "city"})
      */
     private $zip;
 
@@ -41,14 +43,20 @@ class Location
     /**
      * @ORM\ManyToOne(targetEntity=LocationCity::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"location", "user"})
+     * @Groups({"location", "user", "city", "zip"})
      */
     private $city;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, mappedBy="location", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="location")
      */
-    private $user;
+    private $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -103,20 +111,35 @@ class Location
         return $this;
     }
 
-    public function getUser(): ?User
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
     {
-        return $this->user;
+        return $this->users;
     }
 
-    public function setUser(User $user): self
+    public function addUser(User $user): self
     {
-        $this->user = $user;
-
-        // set the owning side of the relation if necessary
-        if ($user->getLocation() !== $this) {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
             $user->setLocation($this);
         }
 
         return $this;
     }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getLocation() === $this) {
+                $user->setLocation(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

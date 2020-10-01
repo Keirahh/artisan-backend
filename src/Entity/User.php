@@ -98,11 +98,11 @@ class User
     private $role;
 
     /**
-     * @ORM\OneToOne(targetEntity=Location::class, inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Location::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user"})
      */
     private $location;
+
 
 
     public function __construct()
@@ -323,10 +323,11 @@ class User
         return $this->location;
     }
 
-    public function setLocation(Location $location): self
+    public function setLocation(?Location $location): self
     {
         $this->location = $location;
 
         return $this;
     }
+
 }
