@@ -47,7 +47,6 @@ class Location
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="location", cascade={"persist", "remove"})
-     * @Groups({"location"})
      */
     private $user;
 

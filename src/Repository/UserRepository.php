@@ -8,6 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use App\Controller\RoleController;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -20,18 +21,21 @@ class UserRepository extends ServiceEntityRepository
     private $manager;
     private $roleController;
     private $locationController;
+    private $encoder;
 
-    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager, RoleController $roleController, LocationController $locationController)
+    public function __construct(UserPasswordEncoderInterface $encoder, ManagerRegistry $registry, EntityManagerInterface $manager, RoleController $roleController, LocationController $locationController)
     {
         parent::__construct($registry, User::class);
         $this->manager = $manager;
         $this->roleController = $roleController;
         $this->locationController = $locationController;
+        $this->encoder = $encoder;
     }
 
     public function saveUser($firstName, $lastName, $email, $password, $birthday, $role, $location)
     {
         $newUser = new User();
+        // $encoded = $this->encoder->encodePassword($newUser,$password);
         $role = $this->roleController->getEntity($role);
         $location = $this->locationController->getEntity($location);
         $newUser

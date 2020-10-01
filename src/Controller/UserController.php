@@ -35,7 +35,6 @@ class UserController extends ApiController
             }
             
         }
-
         $firstName = $data['firstName'];
         $lastName = $data['lastName'];
         $email = $data['email'];
