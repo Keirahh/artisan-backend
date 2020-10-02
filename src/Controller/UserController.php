@@ -19,10 +19,26 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  */
 class UserController extends ApiController
 {
+    /**
+     * @var LocationController
+     */
     private $locationController;
+    /**
+     * @var UserRepository
+     */
     private $userRepository;
+    /**
+     * @var ArtisanRepository
+     */
     private $artisanRepository;
 
+    /**
+     * UserController constructor.
+     * @param LocationController $locationController
+     * @param UserRepository $userRepository
+     * @param ArtisanRepository $artisanRepository
+     * @param SerializerInterface $serializer
+     */
     public function __construct(LocationController $locationController, UserRepository $userRepository, ArtisanRepository $artisanRepository, SerializerInterface $serializer)
     {
         $this->locationController = $locationController;
@@ -83,11 +99,15 @@ class UserController extends ApiController
                 $company = $data["company"];
                 $activity = $data["activity"];
                 $artisan = $this->artisanRepository->saveArtisan($user, $siret, $company, $activity);
+
+                return new JsonResponse([
+                    'user' => $user,
+                    'artisan' => $artisan
+                ], 400);
             }
 
             return new JsonResponse([
-                'user' => $user,
-                'artisan' => $artisan
+                'user' => $user
             ], 400);
 
         }

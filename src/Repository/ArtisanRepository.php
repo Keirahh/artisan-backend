@@ -17,6 +17,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class ArtisanRepository extends ServiceEntityRepository
 {
+    /**
+     * ArtisanRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Artisan::class);
@@ -50,6 +54,15 @@ class ArtisanRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @param $user
+     * @param $siret
+     * @param $company
+     * @param $activity
+     * @return Artisan
+     * @throws \Exception
+     */
     public function saveArtisan($user, $siret, $company, $activity)
     {
         $errors = [];
@@ -65,22 +78,11 @@ class ArtisanRepository extends ServiceEntityRepository
             $this->_em->persist($artisan);
             $this->_em->flush();
         } catch (UniqueConstraintViolationException $e) {
-            return new JsonResponse([
-                "The SIRET is already linked to an account" => $errors
-            ], 400);
+            throw new \Exception("The SIRET is already linked to an account");
         } catch (\Exception $e) {
-            return new JsonResponse([
-                "Unable to save new artisan at this time." => $errors
-            ], 400);
-        }
-
-        if ($errors) {
-            return new JsonResponse([
-                'errors' => $errors
-            ], 400);
+            throw new \Exception("Unable to save new artisan at this time.");
         }
 
         return $artisan;
-
     }
 }

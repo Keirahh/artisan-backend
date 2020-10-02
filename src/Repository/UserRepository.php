@@ -23,10 +23,26 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
+    /**
+     * @var UserPasswordEncoderInterface
+     */
     private $passwordEncoder;
+    /**
+     * @var LocationController
+     */
     private $locationController;
+    /**
+     * @var RoleController
+     */
     private $roleController;
 
+    /**
+     * UserRepository constructor.
+     * @param RoleController $roleController
+     * @param LocationController $locationController
+     * @param ManagerRegistry $registry
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     */
     public function __construct(RoleController $roleController, LocationController $locationController, ManagerRegistry $registry, UserPasswordEncoderInterface $passwordEncoder)
     {
         parent::__construct($registry, User::class);
@@ -35,6 +51,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->roleController = $roleController;
     }
 
+    /**
+     * @param $firstName
+     * @param $lastName
+     * @param $birthdate
+     * @param $location
+     * @param $email
+     * @param $password
+     * @param $role
+     * @return User
+     * @throws \Exception
+     */
     public function saveUser($firstName, $lastName, $birthdate, $location, $email, $password, $role)
     {
         $errors = [];
@@ -56,21 +83,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             $this->_em->persist($user);
             $this->_em->flush();
         } catch (UniqueConstraintViolationException $e) {
-
             throw new \Exception("Wrong email");
-//            return new JsonResponse([
-//                "The email provided already has an account!" => $errors
-//            ], 400);
         } catch (\Exception $e) {
-            return new JsonResponse([
-                "Unable to save new user at this time." => $errors
-            ], 400);
-        }
-
-        if ($errors) {
-            return new JsonResponse([
-                'errors' => $errors
-            ], 400);
+            throw new \Exception("Unable to save new user at this time.");
         }
 
         return $user;
@@ -78,6 +93,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     * @param UserInterface $user
+     * @param string $newEncodedPassword
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
     {
