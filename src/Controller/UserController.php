@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\ArtisanRepository;
 use App\Security\LoginAuthenticator;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +21,13 @@ class UserController extends ApiController
 {
     private $locationController;
     private $userRepository;
-    public function __construct(LocationController $locationController, UserRepository $userRepository, SerializerInterface $serializer)
+    private $artisanRepository;
+
+    public function __construct(LocationController $locationController, UserRepository $userRepository, ArtisanRepository $artisanRepository, SerializerInterface $serializer)
     {
         $this->locationController = $locationController;
         $this->userRepository = $userRepository;
+        $this->artisanRepository = $artisanRepository;
         parent::__construct($serializer);
     }
 
@@ -42,14 +46,15 @@ class UserController extends ApiController
             if (empty($data[$property])) {
                 throw new NotFoundHttpException('Expecting mandatory parameters! (' . $data[$property] . ')');
             }
-            $firstName              = $data["firstName"];
-            $lastName               = $data["lastName"];
-            $birthdate              = $data["birthdate"];
-            $location               = $data["location"];
-            $email                  = $data["email"];
-            $password               = $data["password"];
-            $passwordConfirmation   = $data["password_confirm"];
-            $role                   = $data["role"];
+
+            $firstName = $data["firstName"];
+            $lastName = $data["lastName"];
+            $birthdate = $data["birthdate"];
+            $location = $data["location"];
+            $email = $data["email"];
+            $password = $data["password"];
+            $passwordConfirmation = $data["password_confirm"];
+            $role = $data["role"];
 
             if ($password != $passwordConfirmation) {
                 $errors[] = "Password does not match the password confirmation.";
@@ -61,10 +66,28 @@ class UserController extends ApiController
                 return new JsonResponse([
                     'errors' => $errors
                 ], 400);
-            } else {
-                return $this->userRepository->saveUser($firstName, $lastName, $birthdate, $location, $email, $password, $role);
             }
+
+
+            $user = $this->userRepository->saveUser($firstName, $lastName, $birthdate, $location, $email, $password, $role);
+
+            if ($role === "2") {
+                $dataset = ['siret', 'company', 'activity'];
+                foreach ($dataset as $artisanProperty) {
+                    if (empty($data[$artisanProperty])) {
+                        throw new NotFoundHttpException('Expecting mandatory parameters! (' . $data[$artisanProperty] . ')');
+                    }
+                }
+                $siret = $data["siret"];
+                $company = $data["company"];
+                $activity = $data["activity"];
+                $this->artisanRepository->saveArtisan($user, $siret, $company, $activity);
+            }
+
+            return true;
+
         }
+
     }
 
 

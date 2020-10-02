@@ -10,7 +10,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -72,9 +71,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ], 400);
         }
 
-        return new JsonResponse([
-            'user created' => $user
-        ], Response::HTTP_CREATED);
+        return $user;
     }
 
     /**
