@@ -18,7 +18,7 @@ class Artisan
     private $id;
 
     /**
-     * @ORM\Column(type="integer", unique=true)
+     * @ORM\Column(type="integer", length=255, unique=true)
      */
     private $siret;
 
