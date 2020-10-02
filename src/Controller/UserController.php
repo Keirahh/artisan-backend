@@ -10,11 +10,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/api/user")
  */
-class UserController extends ApiController
+class UserController extends AbstractController
 {
     /**
      * @var LocationController
@@ -28,6 +30,7 @@ class UserController extends ApiController
      * @var ArtisanRepository
      */
     private $artisanRepository;
+    private $serializer;
 
     /**
      * UserController constructor.
@@ -41,7 +44,7 @@ class UserController extends ApiController
         $this->locationController = $locationController;
         $this->userRepository = $userRepository;
         $this->artisanRepository = $artisanRepository;
-        parent::__construct($serializer);
+      //  parent::__construct($serializer);
     }
 
 
@@ -115,33 +118,42 @@ class UserController extends ApiController
 
     }
 
-
+    // /**
+    //  * @Route("/{id}", name="get_user", methods={"GET"})
+    //  */
+    // public function gettoto($id): Response
+    // {
+    //     return $this->serializeDoctrine($this->userRepository->find($id), 'user');
+    // }
+//affichage login
     /**
-     * @Route("/{id}", name="get_user", methods={"GET"})
-     */
-    public function gettoto($id): Response
-    {
-        return $this->serializeDoctrine($this->userRepository->find($id), 'user');
-    }
-
-    /**
-     * @Route("/login", name="api_login", methods={"POST"})
+     * @Route("/login", name="user_login", methods={"POST"})
      */
     public function login()
-    {   //verification user dans la db
-        return new JsonResponse(['result' => true]);
+    {
+        return $this->json(['result' => true]);
     }
-    // /**
-    //  * @Route("/profile", name="api_profile")
-    //  * @IsGranted("ROLE_USER")
-    //  */
-    // public function profile()
-    // {
-    //     return new JsonResponse([
-    //         'user' => $this->getUser()
-    //     ],
-    //     200,
-    //     [ 'groups' => ['api']],
-    //     );
-    // }
+
+//affichage user
+    /**
+     * @Route("/profile", name="user_profile")
+     * @IsGranted("ROLE_USER")
+     */
+    public function profile()
+    {
+        return $this->json([
+            'user' => $this->getUser()
+        ], 200, [], [
+            'groups' => ['log']
+        ]);
+    }
+
+//redirection page index
+    /**
+     * @Route("/", name="user_home")
+     */
+    public function home()
+    {
+        return $this->json(['result' => true]);
+    }
 }

@@ -18,13 +18,13 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"user", "api"})
+     * @Groups({"user"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user"})
+     * @Groups({"user","log"})
      */
     private $email;
 
@@ -41,13 +41,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user", "api"})
+     * @Groups({"user", "log"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user", "api"})
+     * @Groups({"user", "log"})
      */
     private $lastName;
 
@@ -97,6 +97,7 @@ class User implements UserInterface
     /**
      * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user","log"})
      */
     private $role;
 
