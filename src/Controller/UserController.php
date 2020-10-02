@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Security\LoginAuthenticator;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/api/user")
@@ -69,8 +71,29 @@ class UserController extends ApiController
     /**
      * @Route("/{id}", name="get_user", methods={"GET"})
      */
-    public function getUser($id): Response
+    public function gettoto($id): Response
     {
         return $this->serializeDoctrine($this->userRepository->find($id), 'user');
     }
+
+    /**
+     * @Route("/login", name="api_login", methods={"POST"})
+     */
+    public function login()
+    {   //verification user dans la db
+        return new JsonResponse(['result' => true]);
+    }
+    // /**
+    //  * @Route("/profile", name="api_profile")
+    //  * @IsGranted("ROLE_USER")
+    //  */
+    // public function profile()
+    // {
+    //     return new JsonResponse([
+    //         'user' => $this->getUser()
+    //     ], 
+    //     200, 
+    //     [ 'groups' => ['api']], 
+    //     );
+    // }
 }

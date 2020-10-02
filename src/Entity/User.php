@@ -18,7 +18,7 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"user"})
+     * @Groups({"user", "api"})
      */
     private $id;
 
@@ -41,13 +41,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user"})
+     * @Groups({"user", "api"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user"})
+     * @Groups({"user", "api"})
      */
     private $lastName;
 
