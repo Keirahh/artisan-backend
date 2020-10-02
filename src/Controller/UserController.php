@@ -41,6 +41,10 @@ class UserController extends ApiController
         $role                   = $data["role"];
         $errors = [];
 
+        foreach ($dataset as $property) {
+            if (empty($data[$property])) {
+                throw new NotFoundHttpException('Expecting mandatory parameters! (' . $data[$property] . ')');
+            }
         if ($password != $passwordConfirmation) {
             $errors[] = "Password does not match the password confirmation.";
         }
