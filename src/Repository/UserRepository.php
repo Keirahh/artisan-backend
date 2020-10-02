@@ -40,11 +40,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function saveUser($firstName, $lastName, $birthdate, $location, $email, $password, $role)
     {
-        $user = new User();
         $errors = [];
         $roleEntity = $this->roleController->getEntity($role);
         $locationEntity = $this->locationController->getEntity($location);
+
+        $user = new User();
         $encodedPassword = $this->passwordEncoder->encodePassword($user, $password);
+        
         $user->setFirstName($firstName);
         $user->setLastName($lastName);
         $user->setBirthdate($birthdate);
