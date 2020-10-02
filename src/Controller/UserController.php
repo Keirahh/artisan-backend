@@ -35,7 +35,7 @@ class UserController extends ApiController
 
         $errors = [];
 
-        $dataset = ['firstName', 'lastName', 'birthdate', 'location', 'email', 'password', 'password_confirmation', 'role'];
+        $dataset = ['firstName', 'lastName', 'birthdate', 'location', 'email', 'password', 'password_confirm', 'role'];
         foreach ($dataset as $property) {
             if (empty($data[$property])) {
                 throw new NotFoundHttpException('Expecting mandatory parameters! (' . $data[$property] . ')');
@@ -46,7 +46,7 @@ class UserController extends ApiController
             $location               = $data["location"];
             $email                  = $data["email"];
             $password               = $data["password"];
-            $passwordConfirmation   = $data["password_confirmation"];
+            $passwordConfirmation   = $data["password_confirm"];
             $role                   = $data["role"];
 
             if ($password != $passwordConfirmation) {
