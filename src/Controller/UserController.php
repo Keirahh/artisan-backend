@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @Route("/api/user")
@@ -31,32 +32,36 @@ class UserController extends ApiController
     public function register(Request $request)
     {
         $data =  json_decode($request->getContent(), true);
-        $firstName              = $data["firstName"];
-        $lastName               = $data["lastName"];
-        $birthdate              = $data["birthdate"];
-        $location               = $data["location"];
-        $email                  = $data["email"];
-        $password               = $data["password"];
-        $passwordConfirmation   = $data["password_confirmation"];
-        $role                   = $data["role"];
+
         $errors = [];
 
+        $dataset = ['firstName', 'lastName', 'birthdate', 'location', 'email', 'password', 'password_confirmation', 'role'];
         foreach ($dataset as $property) {
             if (empty($data[$property])) {
                 throw new NotFoundHttpException('Expecting mandatory parameters! (' . $data[$property] . ')');
             }
-        if ($password != $passwordConfirmation) {
-            $errors[] = "Password does not match the password confirmation.";
-        }
-        if (strlen($password) < 6) {
-            $errors[] = "Password should be at least 6 characters.";
-        }
-        if ($errors) {
-            return new JsonResponse([
-                'errors' => $errors
-            ], 400);
-        } else {
-           return $this->userRepository->saveUser($firstName, $lastName, $birthdate, $location, $email, $password, $role);
+            $firstName              = $data["firstName"];
+            $lastName               = $data["lastName"];
+            $birthdate              = $data["birthdate"];
+            $location               = $data["location"];
+            $email                  = $data["email"];
+            $password               = $data["password"];
+            $passwordConfirmation   = $data["password_confirmation"];
+            $role                   = $data["role"];
+
+            if ($password != $passwordConfirmation) {
+                $errors[] = "Password does not match the password confirmation.";
+            }
+            if (strlen($password) < 6) {
+                $errors[] = "Password should be at least 6 characters.";
+            }
+            if ($errors) {
+                return new JsonResponse([
+                    'errors' => $errors
+                ], 400);
+            } else {
+                return $this->userRepository->saveUser($firstName, $lastName, $birthdate, $location, $email, $password, $role);
+            }
         }
     }
 
