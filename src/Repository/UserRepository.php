@@ -69,11 +69,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 'errors' => $errors
             ], 400);
         }
-        if (!$errors) {
-            return new JsonResponse([
-                'user created' => $user
-            ], Response::HTTP_CREATED);
-        }
+
+        return new JsonResponse([
+            'user created' => $user
+        ], Response::HTTP_CREATED);
+
     }
 
     /**
