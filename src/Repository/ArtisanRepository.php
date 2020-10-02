@@ -80,7 +80,7 @@ class ArtisanRepository extends ServiceEntityRepository
         } catch (UniqueConstraintViolationException $e) {
             throw new \Exception("The SIRET is already linked to an account");
         } catch (\Exception $e) {
-            throw new \Exception("Unable to save new artisan at this time.");
+            throw new \Exception("Unable to save new artisan at this time." . $e);
         }
 
         return $artisan;
