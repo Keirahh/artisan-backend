@@ -3,10 +3,9 @@
 namespace App\Controller;
 
 use Twig\Environment;
-// include '../csv/importCsv.php';
 use App\Controller\RoleController;
 use App\Controller\LocationController;
-use App\csv\Import;
+use App\csv\ImportCsv;
 use App\Repository\LocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +28,7 @@ class HomeController extends AbstractController
     {
         $index = "Bonjour";
         if (isset($_POST)) {
-            $import = new Import($this->manager);
+            $import = new ImportCsv($this->manager);
 
             return $this->render("pages/home.html.twig", array(
                 "title" => $index,

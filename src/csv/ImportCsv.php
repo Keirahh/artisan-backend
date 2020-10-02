@@ -10,7 +10,7 @@ use App\Entity\LocationZip;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
-class Import
+class ImportCsv
 {
     private $manager;
     private $zip_repo;
