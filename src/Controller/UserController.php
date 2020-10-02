@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Artisan;
 use App\Entity\User;
 use App\Repository\ArtisanRepository;
 use App\Security\LoginAuthenticator;
@@ -38,15 +37,13 @@ class UserController extends ApiController
      */
     public function register(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
+        $data =  json_decode($request->getContent(), true);
 
         $errors = [];
 
         $dataset = ['firstName', 'lastName', 'birthdate', 'location', 'email', 'password', 'password_confirm', 'role'];
-        foreach ($dataset as $property)
-        {
-            if (empty($data[$property]))
-            {
+        foreach ($dataset as $property) {
+            if (empty($data[$property])) {
                 throw new NotFoundHttpException('Expecting mandatory parameters! (' . $data[$property] . ')');
             }
 
@@ -59,18 +56,15 @@ class UserController extends ApiController
             $passwordConfirmation = $data["password_confirm"];
             $role = $data["role"];
 
-            if ($password != $passwordConfirmation)
-            {
+            if ($password != $passwordConfirmation) {
                 $errors[] = "Password does not match the password confirmation.";
             }
 
-            if (strlen($password) < 8)
-            {
+            if (strlen($password) < 8) {
                 $errors[] = "Password should be at least 8 characters.";
             }
 
-            if ($errors)
-            {
+            if ($errors) {
                 return new JsonResponse([
                     'errors' => $errors
                 ], 400);
@@ -78,46 +72,22 @@ class UserController extends ApiController
 
             $user = $this->userRepository->saveUser($firstName, $lastName, $birthdate, $location, $email, $password, $role);
 
-            if (is_a($user, User::class))
-            {
-
-                if ($role === "2")
-                {
-
-                    $dataset = ['siret', 'company', 'activity'];
-                    foreach ($dataset as $artisanProperty)
-                    {
-                        if (empty($data[$artisanProperty]))
-                        {
-                            throw new NotFoundHttpException('Expecting mandatory parameters! (' . $data[$artisanProperty] . ')');
-                        }
+            if ($role === "2") {
+                $dataset = ['siret', 'company', 'activity'];
+                foreach ($dataset as $artisanProperty) {
+                    if (empty($data[$artisanProperty])) {
+                        throw new NotFoundHttpException('Expecting mandatory parameters! (' . $data[$artisanProperty] . ')');
                     }
-
-                    $siret = $data["siret"];
-                    $company = $data["company"];
-                    $activity = $data["activity"];
-                    $artisan = $this->artisanRepository->saveArtisan($user, $siret, $company, $activity);
-
-                    if (is_a($artisan, Artisan::class))
-                    {
-                        return new JsonResponse([
-                            'user' => $user,
-                            'artisan' => $artisan
-                        ], 400);
-                    }
-
-                    return new JsonResponse([
-                        'error' => $artisan
-                    ], 400);
                 }
-
-                return new JsonResponse([
-                    'user' => $user,
-                ], 400);
+                $siret = $data["siret"];
+                $company = $data["company"];
+                $activity = $data["activity"];
+                $artisan = $this->artisanRepository->saveArtisan($user, $siret, $company, $activity);
             }
 
             return new JsonResponse([
-                'error' => $user
+                'user' => $user,
+                'artisan' => $artisan
             ], 400);
 
         }
@@ -140,7 +110,6 @@ class UserController extends ApiController
     {   //verification user dans la db
         return new JsonResponse(['result' => true]);
     }
-
     // /**
     //  * @Route("/profile", name="api_profile")
     //  * @IsGranted("ROLE_USER")

@@ -56,7 +56,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             $this->_em->persist($user);
             $this->_em->flush();
         } catch (UniqueConstraintViolationException $e) {
-            return new JsonResponse([
+            throw new \Exception([
                 "The email provided already has an account!" => $errors
             ], 400);
         } catch (\Exception $e) {
