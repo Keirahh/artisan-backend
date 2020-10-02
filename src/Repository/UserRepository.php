@@ -24,15 +24,13 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    private $manager;
     private $passwordEncoder;
     private $locationController;
     private $roleController;
 
-    public function __construct(RoleController $roleController, LocationController $locationController, ManagerRegistry $registry, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(RoleController $roleController, LocationController $locationController, ManagerRegistry $registry, UserPasswordEncoderInterface $passwordEncoder)
     {
         parent::__construct($registry, User::class);
-        $this->manager = $manager;
         $this->passwordEncoder = $passwordEncoder;
         $this->locationController = $locationController;
         $this->roleController = $roleController;
@@ -56,8 +54,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setRole($roleEntity);
 
         try {
-            $this->manager->persist($user);
-            $this->manager->flush();
+            $this->_em->persist($user);
+            $this->_em->flush();
         } catch (UniqueConstraintViolationException $e) {
             return new JsonResponse([
                 "The email provided already has an account!" => $errors
