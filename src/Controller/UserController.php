@@ -52,8 +52,8 @@ class UserController extends ApiController
             if ($password != $passwordConfirmation) {
                 $errors[] = "Password does not match the password confirmation.";
             }
-            if (strlen($password) < 6) {
-                $errors[] = "Password should be at least 6 characters.";
+            if (strlen($password) < 8) {
+                $errors[] = "Password should be at least 8 characters.";
             }
             if ($errors) {
                 return new JsonResponse([
