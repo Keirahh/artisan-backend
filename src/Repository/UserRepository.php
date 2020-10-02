@@ -46,7 +46,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $user = new User();
         $encodedPassword = $this->passwordEncoder->encodePassword($user, $password);
-        
+
         $user->setFirstName($firstName);
         $user->setLastName($lastName);
         $user->setBirthdate($birthdate);
@@ -89,8 +89,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
 
         $user->setPassword($newEncodedPassword);
-        $this->_em->persist($user);
-        $this->_em->flush();
+        $this->manager->persist($user);
+        $this->manager->flush();
     }
 
     // /**
