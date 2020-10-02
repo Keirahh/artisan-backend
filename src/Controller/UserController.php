@@ -71,6 +71,7 @@ class UserController extends ApiController
 
             $user = $this->userRepository->saveUser($firstName, $lastName, $birthdate, $location, $email, $password, $role);
 
+            $artisan = false;
             if ($role === "2") {
                 $dataset = ['siret', 'company', 'activity'];
                 foreach ($dataset as $artisanProperty) {
@@ -81,10 +82,13 @@ class UserController extends ApiController
                 $siret = $data["siret"];
                 $company = $data["company"];
                 $activity = $data["activity"];
-                $this->artisanRepository->saveArtisan($user, $siret, $company, $activity);
+                $artisan = $this->artisanRepository->saveArtisan($user, $siret, $company, $activity);
             }
 
-            return true;
+            return new JsonResponse([
+                'user' => $user,
+                'artisan' => $artisan
+            ], 400);
 
         }
 
