@@ -3,18 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use App\Entity\Role;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields="email", message="Email already taken")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -24,22 +22,43 @@ class User
      */
     private $id;
 
-
     /**
-     * @ORM\Column(type="string", length=255)
-     * @ORM\Column(nullable=false)
+     * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"user"})
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @ORM\Column(nullable=false)
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
      */
     private $password;
 
     /**
-     * @ORM\OneToOne(targetEntity=Artisan::class, mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"user"})
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"user"})
+     */
+    private $lastName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"user"})
+     */
+    private $birthdate;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Artisan::class, inversedBy="user", cascade={"persist", "remove"})
      * @Groups({"user"})
      */
     private $artisan;
@@ -51,7 +70,7 @@ class User
     private $ad;
 
     /**
-     * @ORM\OneToOne(targetEntity=Image::class, mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Image::class, inversedBy="user", cascade={"persist", "remove"})
      * @Groups({"user"})
      */
     private $image;
@@ -63,46 +82,23 @@ class User
     private $conversation;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Message::class, mappedBy="user")
+     * @ORM\ManyToMany(targetEntity=Message::class, inversedBy="users")
      * @Groups({"user"})
      */
     private $message;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @ORM\Column(nullable=false)
+     * @ORM\ManyToOne(targetEntity=Location::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
      * @Groups({"user"})
      */
-    private $firstName;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @ORM\Column(nullable=false)
-     * @Groups({"user"})
-     */
-    private $lastName;
-
-    /**
-     * @ORM\Column(type="string")
-     * @ORM\Column(nullable=false)
-     * @Groups({"user"})
-     */
-    private $birthdate;
+    private $location;
 
     /**
      * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user"})
      */
     private $role;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Location::class, inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $location;
-
-
 
     public function __construct()
     {
@@ -114,18 +110,6 @@ class User
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function setFirstName(string $firstName): self
-    {
-        $this->firstName = $firstName;
-
-        return $this;
     }
 
     public function getEmail(): ?string
@@ -140,9 +124,41 @@ class User
         return $this;
     }
 
-    public function getPassword(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
     {
-        return $this->password;
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
     }
 
     public function setPassword(string $password): self
@@ -152,19 +168,67 @@ class User
         return $this;
     }
 
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getBirthdate(): ?string
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(string $birthdate): self
+    {
+        $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
     public function getArtisan(): ?Artisan
     {
         return $this->artisan;
     }
 
-    public function setArtisan(Artisan $artisan): self
+    public function setArtisan(?Artisan $artisan): self
     {
         $this->artisan = $artisan;
-
-        // set the owning side of the relation if necessary
-        if ($artisan->getUser() !== $this) {
-            $artisan->setUser($this);
-        }
 
         return $this;
     }
@@ -205,14 +269,9 @@ class User
         return $this->image;
     }
 
-    public function setImage(Image $image): self
+    public function setImage(?Image $image): self
     {
         $this->image = $image;
-
-        // set the owning side of the relation if necessary
-        if ($image->getUser() !== $this) {
-            $image->setUser($this);
-        }
 
         return $this;
     }
@@ -260,7 +319,6 @@ class User
     {
         if (!$this->message->contains($message)) {
             $this->message[] = $message;
-            $message->addUser($this);
         }
 
         return $this;
@@ -270,49 +328,7 @@ class User
     {
         if ($this->message->contains($message)) {
             $this->message->removeElement($message);
-            $message->removeUser($this);
         }
-
-        return $this;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(string $lastName): self
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function getBirthdate(): ?string
-    {
-        return $this->birthdate;
-    }
-
-    public function setBirthdate(string $birthdate): self
-    {
-        $this->birthdate = $birthdate;
-
-        return $this;
-    }
-
-    public function getRole(): ?Role
-    {
-        return $this->role;
-    }
-
-    public function setRole(?Role $role): self
-    {
-        $this->role = $role;
 
         return $this;
     }
@@ -329,4 +345,15 @@ class User
         return $this;
     }
 
+    public function getRole(): ?Role
+    {
+        return $this->role;
+    }
+
+    public function setRole(?Role $role): self
+    {
+        $this->role = $role;
+
+        return $this;
+    }
 }

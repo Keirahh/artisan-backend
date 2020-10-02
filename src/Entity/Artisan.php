@@ -18,12 +18,6 @@ class Artisan
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, inversedBy="artisan", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $siret;
@@ -38,21 +32,14 @@ class Artisan
      */
     private $company;
 
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="artisan", cascade={"persist", "remove"})
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
     }
 
     public function getSiret(): ?int
@@ -87,6 +74,24 @@ class Artisan
     public function setCompany(string $company): self
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newArtisan = null === $user ? null : $this;
+        if ($user->getArtisan() !== $newArtisan) {
+            $user->setArtisan($newArtisan);
+        }
 
         return $this;
     }

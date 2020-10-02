@@ -5,9 +5,9 @@ namespace App\Controller;
 use Twig\Environment;
 // include '../csv/importCsv.php';
 use App\Controller\RoleController;
-use App\Controller\UserController;
 use App\Controller\LocationController;
 use App\csv\Import;
+use App\Repository\LocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -16,14 +16,13 @@ class HomeController extends AbstractController
 
     private $roleController;
     private $manager;
-    private $locationController;
+    private $locationRepository;
 
-    public function __construct($twig, RoleController $rolecontroller, UserController $usercontroller, LocationController $locationController, EntityManagerInterface $manager)
+    public function __construct($twig, RoleController $rolecontroller, LocationRepository $locationRepository, EntityManagerInterface $manager)
     {
         $this->manager = $manager;
         $this->roleController = $rolecontroller;
-        $this->userController = $usercontroller;
-        $this->locationController = $locationController;
+        $this->locationRepository = $locationRepository;
     }
 
     public function index()
@@ -35,14 +34,15 @@ class HomeController extends AbstractController
             return $this->render("pages/home.html.twig", array(
                 "title" => $index,
                 "result" => $import->importCsv(),
-                "Location" =>$this->locationController->displayFront()
+                "Location" =>$this->locationRepository->searchLocation('nic')
             ));
         } else {
             return $this->render("pages/home.html.twig", array(
                 "title" => $index,
                 "role" => json_decode($this->roleController->getRole(2)->getContent()),
-                "user" => json_decode($this->userController->getUser(1)->getContent()),
             ));
         }
     }
 }
+
+

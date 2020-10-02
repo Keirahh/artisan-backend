@@ -23,16 +23,15 @@ class Image
     private $path;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, inversedBy="image", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Ad::class, inversedBy="image")
      * @ORM\JoinColumn(nullable=false)
      */
     private $ad;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="image", cascade={"persist", "remove"})
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -51,18 +50,6 @@ class Image
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     public function getAd(): ?Ad
     {
         return $this->ad;
@@ -71,6 +58,24 @@ class Image
     public function setAd(?Ad $ad): self
     {
         $this->ad = $ad;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newImage = null === $user ? null : $this;
+        if ($user->getImage() !== $newImage) {
+            $user->setImage($newImage);
+        }
 
         return $this;
     }

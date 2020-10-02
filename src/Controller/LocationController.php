@@ -48,11 +48,6 @@ class LocationController extends ApiController
         }
     }
 
-    public function displayFront()
-    {
-        return $this->locationRepository->searchLocation('nic');
-    }
-
     public function getEntity($id)
     {
         return $this->locationRepository->find($id);

@@ -29,7 +29,6 @@ class Role
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="role")
-     * @Groups({"role"})
      */
     private $users;
 

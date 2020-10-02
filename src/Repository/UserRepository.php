@@ -3,11 +3,17 @@
 namespace App\Repository;
 
 use App\Controller\LocationController;
+use App\Controller\RoleController;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use App\Controller\RoleController;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
@@ -16,41 +22,72 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository
+class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     private $manager;
-    private $roleController;
+    private $passwordEncoder;
     private $locationController;
-    private $encoder;
+    private $roleController;
 
-    public function __construct(UserPasswordEncoderInterface $encoder, ManagerRegistry $registry, EntityManagerInterface $manager, RoleController $roleController, LocationController $locationController)
+    public function __construct(RoleController $roleController, LocationController $locationController, ManagerRegistry $registry, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder)
     {
         parent::__construct($registry, User::class);
         $this->manager = $manager;
-        $this->roleController = $roleController;
+        $this->passwordEncoder = $passwordEncoder;
         $this->locationController = $locationController;
-        $this->encoder = $encoder;
+        $this->roleController = $roleController;
     }
 
-    public function saveUser($firstName, $lastName, $email, $password, $birthdate, $role, $location)
+    public function saveUser($firstName, $lastName, $birthdate, $location, $email, $password, $role)
     {
-        $newUser = new User();
-        // $encoded = $this->encoder->encodePassword($newUser,$password);
-        $role = $this->roleController->getEntity($role);
-        $location = $this->locationController->getEntity($location);
-        $newUser
-            ->setFirstName($firstName)
-            ->setLastName($lastName)
-            ->setEmail($email)
-            ->setPassword($password)
-            ->setBirthdate($birthdate)
-            ->setRole($role)
-            ->setLocation($location);
+        $user = new User();
+        $errors = [];
+        $roleEntity = $this->roleController->getEntity($role);
+        $locationEntity = $this->locationController->getEntity($location);
+        $encodedPassword = $this->passwordEncoder->encodePassword($user, $password);
+        $user->setFirstName($firstName);
+        $user->setLastName($lastName);
+        $user->setBirthdate($birthdate);
+        $user->setLocation($locationEntity);
+        $user->setEmail($email);
+        $user->setPassword($encodedPassword);
+        $user->setRole($roleEntity);
+        try {
+            $this->manager->persist($user);
+            $this->manager->flush();
+        } catch (UniqueConstraintViolationException $e) {
+            return new JsonResponse([
+                "The email provided already has an account!" => $errors
+            ], 400);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                "Unable to save new user at this time." => $errors
+            ], 400);
+        }
+        if ($errors) {
+            return new JsonResponse([
+                'errors' => $errors
+            ], 400);
+        }
+        if (!$errors) {
+            return new JsonResponse([
+                'user created' => $user
+            ], Response::HTTP_CREATED);
+        }
+    }
 
-        $this->manager->persist($newUser);
-        $this->manager->flush();
+    /**
+     * Used to upgrade (rehash) the user's password automatically over time.
+     */
+    public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
+    {
+        if (!$user instanceof User) {
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+        }
 
-        return true;
+        $user->setPassword($newEncodedPassword);
+        $this->_em->persist($user);
+        $this->_em->flush();
     }
 
     // /**

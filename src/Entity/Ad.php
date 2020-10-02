@@ -20,11 +20,6 @@ class Ad
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ad")
-     */
-    private $user;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $title;
@@ -39,6 +34,11 @@ class Ad
      */
     private $image;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ad")
+     */
+    private $user;
+
     public function __construct()
     {
         $this->image = new ArrayCollection();
@@ -47,18 +47,6 @@ class Ad
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
     }
 
     public function getTitle(): ?string
@@ -112,6 +100,18 @@ class Ad
                 $image->setAd(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

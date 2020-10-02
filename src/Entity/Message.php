@@ -26,11 +26,6 @@ class Message
     private $conversation;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="message")
-     */
-    private $user;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $content;
@@ -40,9 +35,15 @@ class Message
      */
     private $date;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="message")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->user = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -58,32 +59,6 @@ class Message
     public function setConversation(?Conversation $conversation): self
     {
         $this->conversation = $conversation;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getUser(): Collection
-    {
-        return $this->user;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->user->contains($user)) {
-            $this->user[] = $user;
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->user->contains($user)) {
-            $this->user->removeElement($user);
-        }
 
         return $this;
     }
@@ -108,6 +83,34 @@ class Message
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addMessage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeMessage($this);
+        }
 
         return $this;
     }
