@@ -52,6 +52,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setEmail($email);
         $user->setPassword($encodedPassword);
         $user->setRole($roleEntity);
+
         try {
             $this->manager->persist($user);
             $this->manager->flush();
@@ -64,6 +65,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 "Unable to save new user at this time." => $errors
             ], 400);
         }
+
         if ($errors) {
             return new JsonResponse([
                 'errors' => $errors
@@ -73,7 +75,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return new JsonResponse([
             'user created' => $user
         ], Response::HTTP_CREATED);
-
     }
 
     /**
