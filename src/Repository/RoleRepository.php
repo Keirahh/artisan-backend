@@ -15,12 +15,9 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class RoleRepository extends ServiceEntityRepository
 {
-    private $manager;
-
-    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Role::class);
-        $this->manager = $manager;
     }
 
 
@@ -31,8 +28,8 @@ class RoleRepository extends ServiceEntityRepository
         $newRole
             ->setName($name);
 
-        $this->manager->persist($newRole);
-        $this->manager->flush();
+        $this->_em->persist($newRole);
+        $this->_em->flush();
 
         return true;
     }
