@@ -6,8 +6,6 @@ use App\Entity\Artisan;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @method Artisan|null find($id, $lockMode = null, $lockVersion = null)
@@ -65,8 +63,6 @@ class ArtisanRepository extends ServiceEntityRepository
      */
     public function saveArtisan($user, $siret, $company, $activity)
     {
-        $errors = [];
-
         $artisan = new Artisan();
 
         $artisan->setUser($user);

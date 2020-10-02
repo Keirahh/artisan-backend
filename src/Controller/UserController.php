@@ -2,17 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Repository\ArtisanRepository;
-use App\Security\LoginAuthenticator;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/api/user")
@@ -72,15 +68,18 @@ class UserController extends ApiController
             $passwordConfirmation = $data["password_confirm"];
             $role = $data["role"];
 
-            if ($password != $passwordConfirmation) {
+            if ($password != $passwordConfirmation)
+            {
                 $errors[] = "Password does not match the password confirmation.";
             }
 
-            if (strlen($password) < 8) {
+            if (strlen($password) < 8)
+            {
                 $errors[] = "Password should be at least 8 characters.";
             }
 
-            if ($errors) {
+            if ($errors)
+            {
                 return new JsonResponse([
                     'errors' => $errors
                 ], 400);
@@ -88,28 +87,29 @@ class UserController extends ApiController
 
             $user = $this->userRepository->saveUser($firstName, $lastName, $birthdate, $location, $email, $password, $role);
 
-            if ($role === "2") {
+            if ($role === "2")
+            {
+
                 $dataset = ['siret', 'company', 'activity'];
-                foreach ($dataset as $artisanProperty) {
-                    if (empty($data[$artisanProperty])) {
+
+                foreach ($dataset as $artisanProperty)
+                {
+                    if (empty($data[$artisanProperty]))
+                    {
                         throw new NotFoundHttpException('Expecting mandatory parameters! (' . $data[$artisanProperty] . ')');
                     }
                 }
+
                 $siret = $data["siret"];
                 $company = $data["company"];
                 $activity = $data["activity"];
-                $artisan = $this->artisanRepository->saveArtisan($user, $siret, $company, $activity);
 
-                return new JsonResponse([
-                    'user' => $user,
-                    'artisan' => $artisan
-                ], 400);
+                $this->artisanRepository->saveArtisan($user, $siret, $company, $activity);
             }
 
             return new JsonResponse([
-                'user' => $user
-            ], 400);
-
+                'status' => "Success"
+            ], 200);
         }
 
     }

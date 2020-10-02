@@ -10,8 +10,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -64,7 +62,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function saveUser($firstName, $lastName, $birthdate, $location, $email, $password, $role)
     {
-        $errors = [];
         $roleEntity = $this->roleController->getEntity($role);
         $locationEntity = $this->locationController->getEntity($location);
 
