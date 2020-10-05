@@ -3,13 +3,13 @@
 namespace App\Security;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class LoginAuthenticator extends AbstractGuardAuthenticator
 {
@@ -22,7 +22,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
 
     public function supports(Request $request)
     {
-        return $request->get("_route") === "api_login" && $request->isMethod("POST");
+        return $request->get("_route") === "user_login" && $request->isMethod("POST");
     }
 
     public function getCredentials(Request $request)
@@ -67,6 +67,6 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
 
     public function supportsRememberMe()
     {
-        return false;
+        return true;
     }
 }
