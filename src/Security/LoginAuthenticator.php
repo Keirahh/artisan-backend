@@ -67,6 +67,6 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
 
     public function supportsRememberMe()
     {
-        return false;
+        return true;
     }
 }

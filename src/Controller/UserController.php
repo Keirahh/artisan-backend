@@ -49,9 +49,9 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/add", name="add_user", methods={"POST"})
+     * @Route("/add", name="user_register", methods={"POST"})
      */
-    public function register(Request $request)
+    public function addUser(Request $request)
     {
         $data =  json_decode($request->getContent(), true);
 
