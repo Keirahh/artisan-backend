@@ -118,13 +118,13 @@ class UserController extends AbstractController
 
     }
 
-    // /**
-    //  * @Route("/{id}", name="get_user", methods={"GET"})
-    //  */
-    // public function gettoto($id): Response
-    // {
-    //     return $this->serializeDoctrine($this->userRepository->find($id), 'user');
-    // }
+    /**
+     * @Route("/{id}", name="get_user", methods={"GET"})
+     */
+    public function user($id, ApiController $apiController): Response
+    {
+        return $apiController->serializeDoctrine($this->userRepository->find($id), 'user');
+    }
 //affichage login
     /**
      * @Route("/login", name="user_login", methods={"POST"})
