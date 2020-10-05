@@ -6,6 +6,7 @@ use App\Repository\AdRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AdRepository::class)
@@ -16,21 +17,26 @@ class Ad
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"ad"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"ad"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"ad"})
      */
     private $description;
 
     /**
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="ad")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"ad"})
      */
     private $image;
 

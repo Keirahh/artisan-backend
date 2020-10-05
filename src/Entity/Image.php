@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImageRepository::class)
@@ -19,6 +20,7 @@ class Image
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"ad"})
      */
     private $path;
 

@@ -15,12 +15,18 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class RoleRepository extends ServiceEntityRepository
 {
+    /**
+     * RoleRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Role::class);
     }
 
-
+    /**
+     * @param $name
+     **/
     public function saveRole($name)
     {
         $newRole = new Role();

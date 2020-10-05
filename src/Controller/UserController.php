@@ -19,10 +19,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class UserController extends AbstractController
 {
     /**
-     * @var LocationController
-     */
-    private $locationController;
-    /**
      * @var UserRepository
      */
     private $userRepository;
@@ -30,21 +26,18 @@ class UserController extends AbstractController
      * @var ArtisanRepository
      */
     private $artisanRepository;
-    private $serializer;
 
     /**
      * UserController constructor.
      * @param LocationController $locationController
      * @param UserRepository $userRepository
      * @param ArtisanRepository $artisanRepository
-     * @param SerializerInterface $serializer
      */
-    public function __construct(LocationController $locationController, UserRepository $userRepository, ArtisanRepository $artisanRepository, SerializerInterface $serializer)
+    public function __construct(LocationController $locationController, UserRepository $userRepository, ArtisanRepository $artisanRepository)
     {
         $this->locationController = $locationController;
         $this->userRepository = $userRepository;
         $this->artisanRepository = $artisanRepository;
-      //  parent::__construct($serializer);
     }
 
 
@@ -58,6 +51,7 @@ class UserController extends AbstractController
         $errors = [];
 
         $dataset = ['firstName', 'lastName', 'birthdate', 'location', 'email', 'password', 'password_confirm', 'role'];
+
         foreach ($dataset as $property) {
             if (empty($data[$property])) {
                 throw new NotFoundHttpException('Expecting mandatory parameters! (' . $data[$property] . ')');
@@ -71,6 +65,15 @@ class UserController extends AbstractController
             $password = $data["password"];
             $passwordConfirmation = $data["password_confirm"];
             $role = $data["role"];
+
+            if($role === "2")
+            {
+                $dataset = ['siret', 'company', 'activity'];
+
+                if (empty($data[$property])) {
+                    throw new NotFoundHttpException('Expecting mandatory parameters! (' . $data[$property] . ')');
+                }
+            }
 
             if ($password != $passwordConfirmation)
             {
@@ -93,17 +96,6 @@ class UserController extends AbstractController
 
             if ($role === "2")
             {
-
-                $dataset = ['siret', 'company', 'activity'];
-
-                foreach ($dataset as $artisanProperty)
-                {
-                    if (empty($data[$artisanProperty]))
-                    {
-                        throw new NotFoundHttpException('Expecting mandatory parameters! (' . $data[$artisanProperty] . ')');
-                    }
-                }
-
                 $siret = $data["siret"];
                 $company = $data["company"];
                 $activity = $data["activity"];
@@ -124,6 +116,12 @@ class UserController extends AbstractController
     public function user($id, ApiController $apiController): Response
     {
         return $apiController->serializeDoctrine($this->userRepository->find($id), 'user');
+    }
+
+    
+    public function getEntity($id)
+    {
+        return $this->userRepository->find($id);
     }
 //affichage login
     /**

@@ -16,8 +16,16 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class RoleController extends ApiController
 {
+    /**
+     * @var RoleRepository
+     */
     private $roleRepository;
 
+    /**
+     * RoleController constructor.
+     * @param RoleRepository $roleRepository
+     * @param SerializerInterface $serializer
+     */
     public function __construct(RoleRepository $roleRepository, SerializerInterface $serializer)
     {
         $this->roleRepository = $roleRepository;
@@ -56,7 +64,7 @@ class RoleController extends ApiController
      */
     public function getRole($id): Response
     {
-        return $this->serializeDoctrine($this->roleRepository->find($id),'role');
+        return $this->serializeDoctrine($this->roleRepository->find($id), 'role');
     }
 
     /**
@@ -64,12 +72,11 @@ class RoleController extends ApiController
      */
     public function getRoles(): Response
     {
-        return $this->serializeDoctrine($this->roleRepository->findAll(),'roles');
+        return $this->serializeDoctrine($this->roleRepository->findAll(), 'roles');
     }
 
     public function getEntity($id)
     {
         return $this->roleRepository->find($id);
     }
-
 }
