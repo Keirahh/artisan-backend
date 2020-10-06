@@ -88,7 +88,8 @@ class UserController extends AbstractController
             if ($errors)
             {
                 return new JsonResponse([
-                    'errors' => $errors
+                    'errors' => $errors,
+                    'result' => false
                 ], 400);
             }
 
@@ -104,7 +105,8 @@ class UserController extends AbstractController
             }
 
             return new JsonResponse([
-                'status' => "Success"
+                'status' => "Success",
+                'result' => true
             ], 200);
         }
 

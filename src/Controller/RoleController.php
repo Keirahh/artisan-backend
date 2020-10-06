@@ -72,7 +72,7 @@ class RoleController extends ApiController
      */
     public function getRoles(): Response
     {
-        return $this->serializeDoctrine($this->roleRepository->findAll(), 'roles');
+        return $this->serializeDoctrine($this->roleRepository->findAll(), 'role');
     }
 
     public function getEntity($id)
