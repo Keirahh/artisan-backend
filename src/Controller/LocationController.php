@@ -23,14 +23,7 @@ class LocationController extends ApiController
         parent::__construct($serializer);
     }
 
-    /**
-     * @Route("/{id}", name="get_location", methods={"GET"})
-     */
-    public function getLocation($id): Response
-    {
-        return $this->serializeDoctrine($this->locationRepository->find($id), 'location');
-    }
-
+    
     /**
      * @Route("/{q<\d+>?1}/{page<\d+>?1}", name="get_locations", methods={"GET"})
      */
@@ -47,6 +40,15 @@ class LocationController extends ApiController
             return $this->serializeDoctrine($this->locationRepository->searchLocation($_GET['q']), 'location');
         }
     }
+
+    /**
+     * @Route("/{id}", name="get_location", methods={"GET"})
+     */
+    public function getLocation($id): Response
+    {
+        return $this->serializeDoctrine($this->locationRepository->find($id), 'location');
+    }
+
 
     public function getEntity($id)
     {

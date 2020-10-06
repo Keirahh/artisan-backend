@@ -60,6 +60,14 @@ class RoleController extends ApiController
     }
 
     /**
+     * @Route("/roles", name="get_roles", methods={"GET"})
+     */
+    public function getRoles(): Response
+    {
+        return $this->serializeDoctrine($this->roleRepository->findAll(), "role");
+    }
+
+    /**
      * @Route("/{id}", name="get_role", methods={"GET"})
      */
     public function getRole($id): Response
@@ -67,13 +75,7 @@ class RoleController extends ApiController
         return $this->serializeDoctrine($this->roleRepository->find($id), 'role');
     }
 
-    /**
-     * @Route("/roles", name="get_roles", methods={"GET"})
-     */
-    public function getRoles(): Response
-    {
-        return $this->serializeDoctrine($this->roleRepository->findAll(), 'role');
-    }
+
 
     public function getEntity($id)
     {
