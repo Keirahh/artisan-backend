@@ -72,21 +72,19 @@ class AdController extends ApiController
     }
 
     /**
+     * @Route("/ads", name="get_ads", methods={"GET"})
+     */
+    public function getAds(): Response
+    {
+        return $this->serializeDoctrine($this->adRepository->findAll(), 'ad');
+    }
+
+    /**
      * @Route("/{id}", name="get_ad", methods={"GET"})
      */
     public function getAd($id): Response
     {
         return $this->serializeDoctrine($this->adRepository->find($id), 'ad');
-    }
-
-    /**
-     * @Route("/ads", name="get_ads", methods={"GET"})
-     */
-    public function getAds(): Response
-    {
-        var_dump($this->serializeDoctrine($this->adRepository->findAll(), 'ad'));
-        die();
-        return $this->serializeDoctrine($this->adRepository->findAll(), 'ad');
     }
 
     public function getEntity($id)
