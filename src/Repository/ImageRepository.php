@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Image;
+use App\Controller\AdController;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,11 +15,34 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ImageRepository extends ServiceEntityRepository
 {
+    /**
+     * ImageRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Image::class);
     }
 
+    /**
+     * @param $ad
+     **/
+
+    /**
+     * @param $path
+     **/
+    public function saveImage($ad, $path)
+    {
+        $image = new Image();
+
+        $image->setAd($ad);
+        $image->setPath($path);
+
+        $this->_em->persist($image);
+        $this->_em->flush();
+
+        return true;
+    }
     // /**
     //  * @return Image[] Returns an array of Image objects
     //  */

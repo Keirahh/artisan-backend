@@ -47,8 +47,9 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         return new JsonResponse([
-            'error' => $exception->getMessageKey()
-        ], 400);
+            'error' => $exception->getMessageKey(),
+            'result' => false
+        ], 200);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
@@ -61,7 +62,8 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
     public function start(Request $request, AuthenticationException $authException = null)
     {
         return new JsonResponse([
-            'error' => 'Access Denied'
+            'error' => 'Access Denied',
+            'result' => false
         ]);
     }
 

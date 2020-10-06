@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Controller\UserController;
 use App\Entity\Ad;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,9 +15,46 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class AdRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var UserController
+     */
+    private $userController;
+
+    /**
+     * AdRepository constructor.
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(ManagerRegistry $registry, UserController $userController)
     {
         parent::__construct($registry, Ad::class);
+        $this->userController = $userController;
+    }
+
+    /**
+     * @param $title
+     **/
+
+    /**
+     * @param $description
+     **/
+
+    /**
+     * @param $user
+     **/
+    public function saveAd($title, $description, $user)
+    {
+        $userEntity = $this->userController->getEntity($user);
+        $ad = new Ad();
+
+        $ad->setTitle($title);
+        $ad->setDescription($description);
+        $ad->setUser($userEntity);
+
+
+        $this->_em->persist($ad);
+        $this->_em->flush();
+
+        return $ad;
     }
 
     // /**

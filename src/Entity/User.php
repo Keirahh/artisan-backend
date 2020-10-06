@@ -24,7 +24,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user","log"})
+     * @Groups({"user","log","ad"})
      */
     private $email;
 
@@ -41,13 +41,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user", "log"})
+     * @Groups({"user", "log","ad"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user", "log"})
+     * @Groups({"user", "log","ad"})
      */
     private $lastName;
 
