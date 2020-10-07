@@ -13,13 +13,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
-
+use Symfony\Component\Security\Guard\Token\GuardTokenInterface;
 
 /**
  * @Route("/api/user")
  */
-class UserController extends AbstractController
+class UserController
 {
     /**
      * @var UserRepository
@@ -128,23 +127,11 @@ class UserController extends AbstractController
     {
         return $this->userRepository->find($id);
     }
-//affichage login
-    /**
-     * @Route("/login", name="user_login", methods={"POST"})
-     */
-    public function login()
-    {
-        return $this->json([
-            'user' => $this->getUser()
-        ], 200, [], [
-            'groups' => ['log']
-        ]);
-    }
 
         /**
-     * @Route("/loogin", name="loogin", methods={"POST"})
+     * @Route("/login", name="login", methods={"POST"})
      */
-    public function loogin (Request $request, ApiController $apiController, UserPasswordEncoderInterface $passwordEncoder)
+    public function login (Request $request, ApiController $apiController, UserPasswordEncoderInterface $passwordEncoder)
     {
         $data = json_decode($request->getContent(), true);
         $email = $data["email"];
@@ -169,27 +156,5 @@ class UserController extends AbstractController
             'result' => false,
         ]);
 
-    }
-
-//affichage user
-    /**
-     * @Route("/profile", name="user_profile")
-     * @IsGranted("ROLE_USER")
-     */
-    public function profile()
-    {
-        return $this->json([
-            'user' => $this->getUser()
-        ], 200, [], [
-            'groups' => ['log']
-        ]);
-    }
-//redirection page index
-    /**
-     * @Route("/", name="user_home")
-     */
-    public function home()
-    {
-        return $this->json(['result' => true]);
     }
 }

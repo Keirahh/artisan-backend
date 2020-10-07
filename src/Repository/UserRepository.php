@@ -75,6 +75,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setEmail($email);
         $user->setPassword($encodedPassword);
         $user->setRole($roleEntity);
+         
+        //Generate a random string.
+        $token = openssl_random_pseudo_bytes(16);
+         
+        //Convert the binary data into hexadecimal representation.
+        $token = bin2hex($token);
+         
+        $user->setToken($token);
 
         try {
             $this->_em->persist($user);

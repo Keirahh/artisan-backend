@@ -101,6 +101,12 @@ class User implements UserInterface
      */
     private $role;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
+     * @Groups({"log"})
+     */
+    private $token;
+
     public function __construct()
     {
         $this->ad = new ArrayCollection();
@@ -354,6 +360,18 @@ class User implements UserInterface
     public function setRole(?Role $role): self
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }
