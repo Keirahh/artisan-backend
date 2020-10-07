@@ -131,7 +131,11 @@ class UserController extends AbstractController
      */
     public function login()
     {
-        return $this->json(['result' => true]);
+        return $this->json([
+            'user' => $this->getUser()
+        ], 200, [], [
+            'groups' => ['log']
+        ]);
     }
 
 //affichage user
