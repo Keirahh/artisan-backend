@@ -2,6 +2,8 @@
 
 namespace App\Security;
 
+use App\Controller\UserController;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as abstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -15,9 +17,12 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
 {
 
     private $passwordEncoder;
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    private $userController;
+
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder, UserController $userController)
     {
         $this->passwordEncoder = $passwordEncoder;
+        $this->userController = $userController;
     }
 
     public function supports(Request $request)
@@ -54,8 +59,10 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        return new JsonResponse([
-            'result' => true,
+        return  $this->userController->json([
+            'user' => $this->userController->getUser()
+        ], 200, [], [
+            'groups' => ['log']
         ]);
     }
 
