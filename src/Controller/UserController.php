@@ -12,6 +12,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
+
 
 /**
  * @Route("/api/user")
@@ -138,6 +141,36 @@ class UserController extends AbstractController
         ]);
     }
 
+        /**
+     * @Route("/loogin", name="loogin", methods={"POST"})
+     */
+    public function loogin (Request $request, ApiController $apiController, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $data = json_decode($request->getContent(), true);
+        $email = $data["email"];
+        $password = $data["password"];
+
+        $rst = $this->userRepository->findOneBy(['email' => $email]);
+
+        if($rst)
+        {            
+            $valid = $passwordEncoder->isPasswordValid($rst, $password);
+
+            if($valid)
+            {
+                return new JsonResponse([
+                    'result' => true,
+                    'user' => json_decode($apiController->serializeDoctrineRaw($rst, "log"))
+                ]);
+            }
+        }
+
+        return new JsonResponse([
+            'result' => false,
+        ]);
+
+    }
+
 //affichage user
     /**
      * @Route("/profile", name="user_profile")
@@ -151,7 +184,6 @@ class UserController extends AbstractController
             'groups' => ['log']
         ]);
     }
-
 //redirection page index
     /**
      * @Route("/", name="user_home")

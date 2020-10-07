@@ -89,11 +89,17 @@ class ApiController
 
     public function serializeDoctrine($entity, $groups)
     {
-        $json = $this->serializer->serialize($entity, 'json', [
-            'groups' => [$groups]
-        ]);
+        $json = $this->serializeDoctrineRaw($entity, $groups);
         $response = new Response($json);
         $response->headers->set('Content-Type', 'application/json');
         return $response;
+    }
+
+    public function serializeDoctrineRaw($entity, $groups)
+    {
+        $json = $this->serializer->serialize($entity, 'json', [
+            'groups' => [$groups]
+        ]);
+        return $json;
     }
 }
