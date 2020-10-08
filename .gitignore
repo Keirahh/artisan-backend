@@ -8,6 +8,7 @@
 /var/
 /vendor/
 /.env
+/config/packages/nelmio_cors.yaml
 
 /.idea
 ###< symfony/framework-bundle ###
