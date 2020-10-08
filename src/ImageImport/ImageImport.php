@@ -1,6 +1,6 @@
 <?php
 
-namespace App\imageImport;
+namespace App\ImageImport;
 
 class ImportImage
 {
