@@ -10,15 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Guard\Token\GuardTokenInterface;
 
 /**
  * @Route("/api/user")
  */
-class UserController
+class UserController extends ApiController
 {
     /**
      * @var UserRepository
@@ -34,12 +31,14 @@ class UserController
      * @param LocationController $locationController
      * @param UserRepository $userRepository
      * @param ArtisanRepository $artisanRepository
+     * @param SerializerInterface $serializer
      */
-    public function __construct(LocationController $locationController, UserRepository $userRepository, ArtisanRepository $artisanRepository)
+    public function __construct(LocationController $locationController, UserRepository $userRepository, ArtisanRepository $artisanRepository , SerializerInterface $serializer)
     {
         $this->locationController = $locationController;
         $this->userRepository = $userRepository;
         $this->artisanRepository = $artisanRepository;
+        parent::__construct($serializer);
     }
 
 
@@ -68,8 +67,7 @@ class UserController
             $passwordConfirmation = $data["password_confirm"];
             $role = $data["role"];
 
-            if($role === "2")
-            {
+            if ($role === "2") {
                 $dataset = ['siret', 'company', 'activity'];
 
                 if (empty($data[$property])) {
@@ -77,18 +75,15 @@ class UserController
                 }
             }
 
-            if ($password != $passwordConfirmation)
-            {
+            if ($password != $passwordConfirmation) {
                 $errors[] = "Password does not match the password confirmation.";
             }
 
-            if (strlen($password) < 8)
-            {
+            if (strlen($password) < 8) {
                 $errors[] = "Password should be at least 8 characters.";
             }
 
-            if ($errors)
-            {
+            if ($errors) {
                 return new JsonResponse([
                     'errors' => $errors,
                     'result' => false
@@ -97,8 +92,7 @@ class UserController
 
             $user = $this->userRepository->saveUser($firstName, $lastName, $birthdate, $location, $email, $password, $role);
 
-            if ($role === "2")
-            {
+            if ($role === "2") {
                 $siret = $data["siret"];
                 $company = $data["company"];
                 $activity = $data["activity"];
@@ -111,27 +105,26 @@ class UserController
                 'result' => true
             ], 200);
         }
-
     }
 
     /**
      * @Route("/{id}", name="get_user", methods={"GET"})
      */
-    public function user($id, ApiController $apiController): Response
+    public function user($id): Response
     {
-        return $apiController->serializeDoctrine($this->userRepository->find($id), 'user');
+        return $this->serializeDoctrine($this->userRepository->find($id), 'user');
     }
 
-    
+
     public function getEntity($id)
     {
         return $this->userRepository->find($id);
     }
 
-        /**
+    /**
      * @Route("/login", name="login", methods={"POST"})
      */
-    public function login (Request $request, ApiController $apiController, UserPasswordEncoderInterface $passwordEncoder)
+    public function login(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $data = json_decode($request->getContent(), true);
         $email = $data["email"];
@@ -139,15 +132,13 @@ class UserController
 
         $rst = $this->userRepository->findOneBy(['email' => $email]);
 
-        if($rst)
-        {            
+        if ($rst) {
             $valid = $passwordEncoder->isPasswordValid($rst, $password);
 
-            if($valid)
-            {
+            if ($valid) {
                 return new JsonResponse([
                     'result' => true,
-                    'user' => json_decode($apiController->serializeDoctrineRaw($rst, "log"))
+                    'user' => json_decode($this->serializeDoctrineRaw($rst, "log"))
                 ]);
             }
         }
@@ -155,6 +146,5 @@ class UserController
         return new JsonResponse([
             'result' => false,
         ]);
-
     }
 }

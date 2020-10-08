@@ -6,6 +6,7 @@ use Twig\Environment;
 use App\Controller\RoleController;
 use App\Controller\LocationController;
 use App\csv\ImportCsv;
+use App\ImageImport\ImageImport;
 use App\ImageImport\ImportImage;
 use App\Repository\LocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,21 +29,20 @@ class HomeController extends AbstractController
     public function index()
     {
         $index = "Bonjour";
-        // if (isset($_POST)) {
-        //     $import = new ImportCsv($this->manager);
-
-        //     return $this->render("pages/home.html.twig", array(
-        //         "title" => $index,
-        //         "result" => $import->importCsv(),
-        //         "Location" =>$this->locationRepository->searchLocation('nic')
-        //     ));
-        // } else {
+        if (isset($_POST)) {
+            // $importCsv = new ImportCsv($this->manager);
+            $importImage = new ImageImport($this->manager);
+            return $this->render("pages/home.html.twig", array(
+                "title" => $index,
+                // "resultCsv" => $importCsv->importCsv(),
+                "resultImage" => $importImage->getImage(),
+                "Location" => $this->locationRepository->searchLocation('nic')
+            ));
+        } else {
             return $this->render("pages/home.html.twig", array(
                 "title" => $index,
                 "role" => json_decode($this->roleController->getRole(2)->getContent()),
             ));
-        // }
+        }
     }
 }
-
-
