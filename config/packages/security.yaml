@@ -22,6 +22,11 @@ security:
             stateless: true
             anonymous: true
 
+        register:
+            pattern: ^/api/user/add
+            stateless: true
+            anonymous: true
+
         location:
             pattern: ^/api/location
             stateless: true
