@@ -2,7 +2,7 @@
 
 namespace App\ImageImport;
 
-class ImportImage
+class ImageImport
 {
     public function getImage()
     {
