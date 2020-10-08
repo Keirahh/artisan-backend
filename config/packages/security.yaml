@@ -22,6 +22,11 @@ security:
             stateless: true
             anonymous: true
 
+        location:
+            pattern: ^/api/location
+            stateless: true
+            anonymous: true
+
         api:
             pattern: ^/api
             # anonymous: true
