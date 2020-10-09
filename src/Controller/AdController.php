@@ -76,7 +76,16 @@ class AdController extends ApiController
      */
     public function getAds(): Response
     {
-        return $this->serializeDoctrine($this->adRepository->findAll(), 'ad');
+        $title = $_GET['title'];
+
+        if($title)
+        {
+            return $this->serializeDoctrine($this->adRepository->findBy(['title' => $title]), 'ad');
+        }
+        else
+        {
+            return $this->serializeDoctrine($this->adRepository->findAll(), 'ad');
+        }
     }
 
     /**
