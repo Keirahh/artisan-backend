@@ -39,7 +39,7 @@ class ImageRepository extends ServiceEntityRepository
         $this->_em->persist($image);
         $this->_em->flush();
 
-        return true;
+        return $image;
     }
 
     public function saveAdImage($path, $ad)
@@ -52,7 +52,7 @@ class ImageRepository extends ServiceEntityRepository
         $this->_em->persist($image);
         $this->_em->flush();
 
-        return true;
+        return $image;
     }
 
 

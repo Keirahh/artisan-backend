@@ -67,16 +67,13 @@ class AdController extends ApiController
         if($_FILES['image'])
         {
             $uploader = new ImageImport();
-            $path = $uploader->upload('fileImage');
+            $path = $uploader->upload('image');
 
             if($path) {
                 $img = $this->imageRepository->saveAdImage($path, $ad);
             }
         }
-//        if ($data['path']) {
-//            $path = $data["path"];
-//            $this->imageRepository->saveImage($ad, $path);
-//        }
+
         return new JsonResponse([
             'status' => "Success"
         ], 200);
