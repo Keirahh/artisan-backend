@@ -80,7 +80,7 @@ class AdController extends ApiController
 
         if($title)
         {
-            return $this->serializeDoctrine($this->adRepository->findBy(['title' => $title]), 'ad');
+            return $this->serializeDoctrine($this->adRepository->findByTitle($title), 'ad');
         }
         else
         {

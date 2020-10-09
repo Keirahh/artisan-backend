@@ -57,6 +57,21 @@ class AdRepository extends ServiceEntityRepository
         return $ad;
     }
 
+
+    /**
+     * @return int|mixed|string
+     */
+    public function findByTitle($title)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->andWhere('p.title LIKE :val')
+            ->setParameter('val', "%" . $title . "%")
+            ->orderBy('p.id', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * @return int|mixed|string
      */
