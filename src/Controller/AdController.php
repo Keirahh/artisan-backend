@@ -80,6 +80,15 @@ class AdController extends ApiController
     }
 
     /**
+     * @Route("/recent_ads", name="get_ads", methods={"GET"})
+     */
+    public function getRecentAds(): Response
+    {
+        return $this->serializeDoctrine($this->adRepository->findRecent(), 'ad');
+    }
+
+
+    /**
      * @Route("/{id}", name="get_ad", methods={"GET"})
      */
     public function getAd($id): Response
