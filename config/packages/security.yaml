@@ -32,6 +32,11 @@ security:
             stateless: true
             anonymous: true
 
+        ads:
+            pattern: ^/api/ad/ads
+            stateless: true
+            anonymous: true
+
         api:
             pattern: ^/api
             # anonymous: true
