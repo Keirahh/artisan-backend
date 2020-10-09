@@ -57,6 +57,19 @@ class AdRepository extends ServiceEntityRepository
         return $ad;
     }
 
+    /**
+     * @return int|mixed|string
+     */
+    public function findRecent()
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->orderBy('p.id', 'DESC')
+            ->setMaxResults(9);
+
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Ad[] Returns an array of Ad objects
     //  */
