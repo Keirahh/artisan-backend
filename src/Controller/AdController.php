@@ -80,7 +80,7 @@ class AdController extends ApiController
     }
 
     /**
-     * @Route("/recent_ads", name="get_ads", methods={"GET"})
+     * @Route("/recent_ads", name="get_recent_ads", methods={"GET"})
      */
     public function getRecentAds(): Response
     {
