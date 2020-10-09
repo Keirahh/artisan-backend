@@ -35,7 +35,6 @@ class Ad
 
     /**
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="ad")
-     * @ORM\JoinColumn(nullable=false)
      * @Groups({"ad"})
      */
     private $image;
@@ -44,6 +43,13 @@ class Ad
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ad")
      */
     private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Location::class, inversedBy="ads")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"ad"})
+     */
+    private $location;
 
     public function __construct()
     {
@@ -118,6 +124,18 @@ class Ad
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): self
+    {
+        $this->location = $location;
 
         return $this;
     }

@@ -24,26 +24,26 @@ class Location
     /**
      * @ORM\ManyToOne(targetEntity=LocationZip::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"location", "user", "zip", "city"})
+     * @Groups({"location", "user", "zip", "city","ad"})
      */
     private $zip;
 
     /**
      * @ORM\ManyToOne(targetEntity=LocationRegion::class, cascade={"persist", "remove"})
-     * @Groups({"location", "user"})
+     * @Groups({"location", "user","ad"})
      */
     private $region;
 
     /**
      * @ORM\ManyToOne(targetEntity=LocationDepartement::class, cascade={"persist", "remove"})
-     * @Groups({"location", "user"})
+     * @Groups({"location", "user","ad"})
      */
     private $departement;
 
     /**
      * @ORM\ManyToOne(targetEntity=LocationCity::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"location", "user", "city", "zip"})
+     * @Groups({"location", "user", "city", "zip","ad"})
      */
     private $city;
 
@@ -52,9 +52,15 @@ class Location
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Ad::class, mappedBy="location")
+     */
+    private $ads;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->ads = new ArrayCollection();
     }
 
 
@@ -136,6 +142,37 @@ class Location
             // set the owning side to null (unless already changed)
             if ($user->getLocation() === $this) {
                 $user->setLocation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ad[]
+     */
+    public function getAds(): Collection
+    {
+        return $this->ads;
+    }
+
+    public function addAd(Ad $ad): self
+    {
+        if (!$this->ads->contains($ad)) {
+            $this->ads[] = $ad;
+            $ad->setLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAd(Ad $ad): self
+    {
+        if ($this->ads->contains($ad)) {
+            $this->ads->removeElement($ad);
+            // set the owning side to null (unless already changed)
+            if ($ad->getLocation() === $this) {
+                $ad->setLocation(null);
             }
         }
 

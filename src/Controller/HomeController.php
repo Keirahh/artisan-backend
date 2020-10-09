@@ -7,6 +7,7 @@ use App\Controller\RoleController;
 use App\Controller\LocationController;
 use App\csv\ImportCsv;
 use App\ImageImport\ImageImport;
+use App\ImageImport\FormulaireAd;
 use App\Repository\LocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,11 +31,13 @@ class HomeController extends AbstractController
         $index = "Bonjour";
         if (isset($_POST)) {
            // $importCsv = new ImportCsv($this->manager);
-           $importImage = new ImageImport($this->manager);
+        //    $importImage = new ImageImport($this->manager);
+        $formAd = new FormulaireAd();
             return $this->render("pages/home.html.twig", array(
                 "title" => $index,
                 // "resultCsv" => $importCsv->importCsv(),
-                "resultImage" => $importImage->upload(),
+               // "resultImage" => $importImage->upload(),
+               "formulaire" => $formAd->formAd(),
                 "Location" => $this->locationRepository->searchLocation('nic')
             ));
         } else {
