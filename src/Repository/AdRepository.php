@@ -65,7 +65,7 @@ class AdRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('p');
         $qb
             ->orderBy('p.id', 'DESC')
-            ->setMaxResults(6);
+            ->setMaxResults(3);
 
         return $qb->getQuery()->getResult();
     }
