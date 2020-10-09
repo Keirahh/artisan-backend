@@ -34,7 +34,7 @@ class LocationController extends ApiController
             if (is_null($page) || $page < 1) {
                 $page = 1;
             }
-            $limit = 10;
+            $limit = 9;
             return $this->serializeDoctrine($this->locationRepository->findAllLocations($page, $limit), 'location');
         } else {
             return $this->serializeDoctrine($this->locationRepository->searchLocation($_GET['q']), 'location');
