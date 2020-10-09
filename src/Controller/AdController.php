@@ -77,10 +77,16 @@ class AdController extends ApiController
     public function getAds(): Response
     {
         $title = $_GET['title'];
+        $page = $_GET['page'];
+
+        if (is_null($page) || $page < 1) {
+            $page = 1;
+        }
+        $limit = 10;
 
         if($title)
         {
-            return $this->serializeDoctrine($this->adRepository->findByTitle($title), 'ad');
+            return $this->serializeDoctrine($this->adRepository->findByTitle($page, $limit, $title), 'ad');
         }
         else
         {

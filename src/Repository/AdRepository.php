@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Controller\UserController;
 use App\Entity\Ad;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -61,15 +62,17 @@ class AdRepository extends ServiceEntityRepository
     /**
      * @return int|mixed|string
      */
-    public function findByTitle($title)
+    public function findByTitle($page, $limit, $title)
     {
         $qb = $this->createQueryBuilder('p');
         $qb
             ->andWhere('p.title LIKE :val')
             ->setParameter('val', "%" . $title . "%")
-            ->orderBy('p.id', 'DESC');
+            ->orderBy('p.id', 'DESC')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
 
-        return $qb->getQuery()->getResult();
+        return new Paginator($qb);
     }
 
     /**
