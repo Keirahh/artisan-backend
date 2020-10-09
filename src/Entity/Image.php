@@ -26,7 +26,6 @@ class Image
 
     /**
      * @ORM\ManyToOne(targetEntity=Ad::class, inversedBy="image")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $ad;
 
