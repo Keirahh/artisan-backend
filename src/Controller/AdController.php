@@ -82,7 +82,7 @@ class AdController extends ApiController
         if (is_null($page) || $page < 1) {
             $page = 1;
         }
-        $limit = 10;
+        $limit = 9;
 
         if($title)
         {
