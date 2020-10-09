@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
+use App\ImageImport\ImageImport;
 use App\Repository\AdRepository;
 use App\Repository\ImageRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,10 +64,19 @@ class AdController extends ApiController
         $ad = $this->adRepository->saveAd($title, $description, $user);
 
 
-        if ($data['path']) {
-            $path = $data["path"];
-            $this->imageRepository->saveImage($ad, $path);
+        if($_FILES['image'])
+        {
+            $uploader = new ImageImport();
+            $path = $uploader->upload('fileImage');
+
+            if($path) {
+                $img = $this->imageRepository->saveAdImage($path, $ad);
+            }
         }
+//        if ($data['path']) {
+//            $path = $data["path"];
+//            $this->imageRepository->saveImage($ad, $path);
+//        }
         return new JsonResponse([
             'status' => "Success"
         ], 200);

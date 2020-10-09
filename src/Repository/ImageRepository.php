@@ -31,11 +31,9 @@ class ImageRepository extends ServiceEntityRepository
     /**
      * @param $path
      **/
-    public function saveImage($ad, $path)
+    public function saveImage($path)
     {
         $image = new Image();
-
-        $image->setAd($ad);
         $image->setPath($path);
 
         $this->_em->persist($image);
@@ -43,6 +41,21 @@ class ImageRepository extends ServiceEntityRepository
 
         return true;
     }
+
+    public function saveAdImage($path, $ad)
+    {
+        $image = new Image();
+        $image
+            ->setAd($ad)
+            ->setPath($path);
+
+        $this->_em->persist($image);
+        $this->_em->flush();
+
+        return true;
+    }
+
+
     // /**
     //  * @return Image[] Returns an array of Image objects
     //  */
