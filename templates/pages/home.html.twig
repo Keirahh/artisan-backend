@@ -9,8 +9,8 @@
 	</head>
 	<body>
 		{% block body %}
-			{# {{dump(resultCsv ~ ' new entities created')}} #}
-			{# <form class="form-horizontal" action="" method="post" name="frmCSVImport" id="frmCSVImport" enctype="multipart/form-data">
+			{# {{dump(resultCsv ~ ' new entities created')}}
+			<form class="form-horizontal" action="" method="post" name="frmCSVImport" id="frmCSVImport" enctype="multipart/form-data">
 				<div class="input-row">
 					<label class="col-md-4 control-label">Choose CSV File</label>
 					<input type="file" name="file" id="file" accept=".csv">
@@ -18,14 +18,30 @@
 					<br/>
 				</div>
 			</form> #}
-			<form action="" name="uploadImage" id="uploadImage" method="post" enctype="multipart/form-data">
+			<form action="" name="annonce" id="annonce" method="post" enctype="multipart/form-data">
 				<div>
-					<label for="fileImage">File to upload:</label>
-					<input type="file" name="fileImage" id="fileImage">
+					<label for="title">title</label>
+					<input type="text" name="title" id="title">
 				</div>
-				<button type="submit" name="importImage">Send</button>
+				<div>
+					<label for="description">description</label>
+					<input type="text" name="description" id="description">
+				</div>
+				<div>
+					<label for="user">user</label>
+					<input type="text" name="user" id="user">
+				</div>
+				<div>
+					<label for="location">location</label>
+					<input type="text" name="location" id="location">
+				</div>
+				<div>
+					<label for="image">File to upload:</label>
+					<input type="file" name="image" id="image">
+				</div>
+				<button type="submit" name="submit">Send</button>
 			</form>
-			{{dump(resultImage ~ ' yes')}}
+			{{dump(formulaire ~ ' yes')}}
 			{# {{dump(Location)}}
 			{% for l in Location %}
 				<p>{{l.city.name}}</p>

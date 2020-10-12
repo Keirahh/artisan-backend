@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Controller\UserController;
+use App\Controller\LocationController;
 use App\Entity\Ad;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -20,15 +21,20 @@ class AdRepository extends ServiceEntityRepository
      * @var UserController
      */
     private $userController;
+        /**
+     * @var LocationController
+     */
+    private $locationController;
 
     /**
      * AdRepository constructor.
      * @param ManagerRegistry $registry
      */
-    public function __construct(ManagerRegistry $registry, UserController $userController)
+    public function __construct(ManagerRegistry $registry, UserController $userController, LocationController $locationController)
     {
         parent::__construct($registry, Ad::class);
         $this->userController = $userController;
+        $this->locationController = $locationController;
     }
 
     /**
@@ -42,15 +48,16 @@ class AdRepository extends ServiceEntityRepository
     /**
      * @param $user
      **/
-    public function saveAd($title, $description, $user)
+    public function saveAd($title, $description, $user, $location)
     {
         $userEntity = $this->userController->getEntity($user);
+        $locationEntity = $this->locationController->getEntity($location);
         $ad = new Ad();
 
         $ad->setTitle($title);
         $ad->setDescription($description);
         $ad->setUser($userEntity);
-
+        $ad->setLocation($locationEntity);
 
         $this->_em->persist($ad);
         $this->_em->flush();

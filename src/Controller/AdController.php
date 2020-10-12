@@ -49,7 +49,7 @@ class AdController extends ApiController
         $data = json_decode($request->getContent(), true);
 
 
-        $dataset = ['title', 'description', 'user'];
+        $dataset = ['title', 'description', 'user', 'location'];
 
         foreach ($dataset as $property) {
             if (empty($data[$property])) {
@@ -60,17 +60,18 @@ class AdController extends ApiController
         $title = $data['title'];
         $description = $data['description'];
         $user = $data['user'];
+        $location = $data['location'];
 
-        $ad = $this->adRepository->saveAd($title, $description, $user);
+        $ad = $this->adRepository->saveAd($title, $description, $user, $location);
 
+        if ($data['path']) {
+            if ($_FILES['image']) {
+                $uploader = new ImageImport();
+                $path = $uploader->upload('image');
 
-        if($_FILES['image'])
-        {
-            $uploader = new ImageImport();
-            $path = $uploader->upload('image');
-
-            if($path) {
-                $img = $this->imageRepository->saveAdImage($path, $ad);
+                if ($path) {
+                    $img = $this->imageRepository->saveAdImage($path, $ad);
+                }
             }
         }
 
@@ -92,12 +93,9 @@ class AdController extends ApiController
         }
         $limit = 9;
 
-        if($title)
-        {
+        if ($title) {
             return $this->serializeDoctrine($this->adRepository->findByTitle($page, $limit, $title), 'ad');
-        }
-        else
-        {
+        } else {
             return $this->serializeDoctrine($this->adRepository->findAll(), 'ad');
         }
     }
