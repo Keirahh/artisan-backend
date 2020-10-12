@@ -47,10 +47,7 @@ class UserController extends ApiController
      */
     public function addUser(Request $request)
     {
-        $data =  json_decode($request->getContent(), true);
-
-        echo($data);
-        die();
+        $data = json_decode($request->getContent(), true);
 
         $errors = [];
 
