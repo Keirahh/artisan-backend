@@ -49,6 +49,8 @@ class UserController extends ApiController
     {
         $data =  json_decode($request->getContent(), true);
 
+        echo($data);
+        die();
         $errors = [];
 
         $dataset = ['firstName', 'lastName', 'birthdate', 'location', 'email', 'password', 'password_confirm', 'role'];
