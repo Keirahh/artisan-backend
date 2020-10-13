@@ -20,7 +20,7 @@ class Image
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"ad"})
+     * @Groups({"ad","image"})
      */
     private $path;
 
