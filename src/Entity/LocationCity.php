@@ -20,7 +20,7 @@ class LocationCity
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"location", "user", "city"})
+     * @Groups({"location", "user", "city","ad"})
      */
     private $name;
 
