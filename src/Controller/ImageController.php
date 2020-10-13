@@ -8,6 +8,7 @@ use App\Repository\ImageRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
 
@@ -16,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ImageController extends ApiController
 {
-   /**
+    /**
      * @var ImageRepository
      */
     private $imageRepository;
@@ -35,10 +36,15 @@ class ImageController extends ApiController
     /**
      * @Route("/add", name="add_image", methods={"POST"})
      */
-    public function addImage(Request $request)
+    public function addImage(Request $request): JsonResponse
     {
         $uploader = new ImageImport();
         $path = $uploader->upload('image');
+        if ($path) {
+            return new JsonResponse([
+                'status' => "Success"
+            ], 200);
+        }
     }
 
     /**
