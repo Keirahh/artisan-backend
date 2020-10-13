@@ -20,28 +20,11 @@
 			</form> #}
 			<form action="" name="annonce" id="annonce" method="post" enctype="multipart/form-data">
 				<div>
-					<label for="title">title</label>
-					<input type="text" name="title" id="title">
-				</div>
-				<div>
-					<label for="description">description</label>
-					<input type="text" name="description" id="description">
-				</div>
-				<div>
-					<label for="user">user</label>
-					<input type="text" name="user" id="user">
-				</div>
-				<div>
-					<label for="location">location</label>
-					<input type="text" name="location" id="location">
-				</div>
-				<div>
 					<label for="image">File to upload:</label>
 					<input type="file" name="image" id="image">
 				</div>
 				<button type="submit" name="submit">Send</button>
 			</form>
-			{{dump(formulaire ~ ' yes')}}
 			{# {{dump(Location)}}
 			{% for l in Location %}
 				<p>{{l.city.name}}</p>

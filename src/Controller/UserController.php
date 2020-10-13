@@ -49,6 +49,7 @@ class UserController extends ApiController
     {
         $data = json_decode($request->getContent(), true);
 
+
         $errors = [];
 
         $dataset = ['firstName', 'lastName', 'birthdate', 'location', 'email', 'password', 'password_confirm', 'role'];
@@ -59,7 +60,7 @@ class UserController extends ApiController
             }
 
             $firstName = $data["firstName"];
-	    $lastName = $data["lastName"];
+	        $lastName = $data["lastName"];
             $birthdate = $data["birthdate"];
             $location = $data["location"];
             $email = $data["email"];
