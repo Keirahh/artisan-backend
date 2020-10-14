@@ -8,7 +8,7 @@ class ImageImport
 {
     public function upload($file)
     {
-        $target_dir = $_SERVER['DOCUMENT_ROOT'] . '/images/';
+        $target_dir = '/images/';
         $target_file = $target_dir . basename($_FILES[$file]['name']);
         $error = false;
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
