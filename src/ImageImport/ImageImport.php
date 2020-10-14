@@ -26,6 +26,9 @@ class ImageImport
         $error = false;
         $imageFileType = mime_content_type ($_FILES[$file]['name']);
 
+        var_dump($imageFileType);
+        die();
+
         $check = getimagesize($_FILES[$file]['tmp_name']);
         if ($check !== false) {
             $error = false;
