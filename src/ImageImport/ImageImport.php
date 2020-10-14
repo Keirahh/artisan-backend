@@ -19,19 +19,19 @@ class ImageImport
                 echo 'File is an image - ' . $check['mime'] . '.';
                 $error = false;
             } else {
-                echo 'File is not an image.';
+                $message = 'File is not an image.';
                 $error = true;
             }
 
             // Check if file already exists
             if (file_exists($target_file)) {
-                echo 'Sorry, file already exists.';
+                $message = 'Sorry, file already exists.';
                 $error = true;
             }
 
             // Check file size
             if ($_FILES[$file]['size'] > 500000) {
-                echo 'Sorry, your file is too large.';
+                $message =  'Sorry, your file is too large.';
                 $error = true;
             }
 
@@ -39,15 +39,13 @@ class ImageImport
             if (
                 $imageFileType != 'jpg' && $imageFileType != 'png' && $imageFileType != 'jpeg'
             ) {
-                echo 'Sorry, only JPG, JPEG & PNG files are allowed.';
+                $message =  'Sorry, only JPG, JPEG & PNG files are allowed.';
                 $error = true;
             }
 
             // Check if $error is set to 0 by an error
             if ($error == true) {
-                echo 'Sorry, your file was not uploaded.';
-                return null;
-                // if everything is ok, try to upload file
+                throw new \Exception($message);
             }
 
             if (move_uploaded_file($_FILES[$file]['tmp_name'], $target_file)) {
