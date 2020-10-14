@@ -8,8 +8,6 @@ class ImageImport
 {
     public function upload($file)
     {
-        var_dump( $_SERVER['DOCUMENT_ROOT']);
-        die();
         $target_dir = $_SERVER['DOCUMENT_ROOT'] . '/images/';
         $target_file = $target_dir . basename($_FILES[$file]['name']);
         $error = false;
