@@ -4,7 +4,7 @@ namespace App\ImageImport;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class ImageImport 
+class ImageImport
 {
     public function upload($file)
     {
@@ -31,28 +31,24 @@ class ImageImport
 
             // Check file size
             if ($_FILES[$file]['size'] > 500000) {
-                $message =  'Sorry, your file is too large.';
+                $message = 'Sorry, your file is too large.';
                 $error = true;
             }
 
             // Allow certain file formats
-            if (
-                $imageFileType != 'jpg' && $imageFileType != 'png' && $imageFileType != 'jpeg'
-            ) {
-                $message =  'Sorry, only JPG, JPEG & PNG files are allowed.';
+            if ($imageFileType != 'jpg' && $imageFileType != 'png' && $imageFileType != 'jpeg') {
+                $message = 'Sorry, only JPG, JPEG & PNG files are allowed.';
                 $error = true;
             }
 
             // Check if $error is set to 0 by an error
             if ($error == true) {
                 throw new \Exception($message);
-            }
-
-            if (move_uploaded_file($_FILES[$file]['tmp_name'], $target_file)) {
-                echo 'The file ' . htmlspecialchars(basename($_FILES[$file]['name'])) . ' has been uploaded.';
-                return $target_file;
             } else {
-                echo 'Sorry, there was an error uploading your file.';
+                if (move_uploaded_file($_FILES[$file]['tmp_name'], $target_file)) {
+                    echo 'The file ' . htmlspecialchars(basename($_FILES[$file]['name'])) . ' has been uploaded.';
+                    return $target_file;
+                }
             }
         }
         return null;
