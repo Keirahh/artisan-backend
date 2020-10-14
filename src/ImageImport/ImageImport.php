@@ -24,7 +24,7 @@ class ImageImport
         $uniqId = $this->uniqId();
         $target_file = $target_dir . $uniqId;
         $error = false;
-        $imageFileType = mime_content_type ($target_file);
+        $imageFileType = mime_content_type ($_FILES[$file]['tmp_name']);
 
         $check = getimagesize($_FILES[$file]['tmp_name']);
         if ($check !== false) {
