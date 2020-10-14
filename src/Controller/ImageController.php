@@ -38,6 +38,8 @@ class ImageController extends ApiController
      */
     public function addImage(Request $request): JsonResponse
     {
+        var_dump($_FILES);
+        die();
         $uploader = new ImageImport();
         $path = $uploader->upload('image');
         if ($path) {
