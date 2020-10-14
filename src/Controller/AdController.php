@@ -69,7 +69,7 @@ class AdController extends ApiController
         $location = $data['location'];
 
         $ad = $this->adRepository->saveAd($title, $description, $user->getId(), $location);
-        
+
         if($data['path'])
         {
             $this->imageRepository->saveAdImage($data['path'], $ad);
