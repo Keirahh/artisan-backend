@@ -6,6 +6,7 @@ use App\Entity\Image;
 use App\ImageImport\ImageImport;
 use App\Repository\AdRepository;
 use App\Repository\ImageRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,17 +28,23 @@ class AdController extends ApiController
      * @var ImageRepository
      */
     private $imageRepository;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     /**
      * AdController constructor.
      * @param AdRepository $adRepository
      * @param ImageRepository $imageRepository
+     * @param UserRepository $userRepository
      * @param SerializerInterface $serializer
      */
-    public function __construct(AdRepository $adRepository, ImageRepository $imageRepository, SerializerInterface $serializer)
+    public function __construct(AdRepository $adRepository, ImageRepository $imageRepository, UserRepository $userRepository, SerializerInterface $serializer)
     {
         $this->adRepository = $adRepository;
         $this->imageRepository = $imageRepository;
+        $this->userRepository = $userRepository;
         parent::__construct($serializer);
     }
 
@@ -48,8 +55,7 @@ class AdController extends ApiController
     {
         $data = json_decode($request->getContent(), true);
 
-
-        $dataset = ['title', 'description', 'user', 'location'];
+        $dataset = ['title', 'description', 'token', 'location'];
 
         foreach ($dataset as $property) {
             if (empty($data[$property])) {
@@ -59,10 +65,10 @@ class AdController extends ApiController
 
         $title = $data['title'];
         $description = $data['description'];
-        $user = $data['user'];
+        $user = $this->userRepository->findOneBy(['token' => $data['token']]);
         $location = $data['location'];
 
-        $ad = $this->adRepository->saveAd($title, $description, $user, $location);
+        $ad = $this->adRepository->saveAd($title, $description, $user->getId(), $location);
 
         if ($data['path']) {
             if ($_FILES['image']) {
