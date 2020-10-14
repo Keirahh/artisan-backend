@@ -48,6 +48,11 @@ class ImageController extends ApiController
                 'path' => json_decode($this->serializeDoctrineRaw($rst, "image"))
             ], 200);
         }
+
+        return new JsonResponse([
+            'status' => "Failed",
+            'error' => "Image upload failed"
+        ], 400);
     }
 
     /**
