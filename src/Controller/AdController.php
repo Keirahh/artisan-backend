@@ -69,16 +69,10 @@ class AdController extends ApiController
         $location = $data['location'];
 
         $ad = $this->adRepository->saveAd($title, $description, $user->getId(), $location);
-
-        if ($data['path']) {
-            if ($_FILES['image']) {
-                $uploader = new ImageImport();
-                $path = $uploader->upload('image');
-
-                if ($path) {
-                    $img = $this->imageRepository->saveAdImage($path, $ad);
-                }
-            }
+        
+        if($data['path'])
+        {
+            $this->imageRepository->saveAdImage($data['path'], $ad);
         }
 
         return new JsonResponse([
