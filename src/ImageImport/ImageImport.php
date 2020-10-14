@@ -47,7 +47,7 @@ class ImageImport
 
         // Allow certain file formats
         if ($imageFileType != 'jpg' && $imageFileType != 'png' && $imageFileType != 'jpeg') {
-            $message = 'Sorry, only JPG, JPEG & PNG files are allowed.';
+            $message = 'Sorry, only JPG, JPEG & PNG files are allowed.' . $imageFileType . ' sent';
             $error = true;
         }
 
