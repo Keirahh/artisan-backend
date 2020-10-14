@@ -15,7 +15,6 @@ class ImageImport
 
         $check = getimagesize($_FILES[$file]['tmp_name']);
         if ($check !== false) {
-            echo 'File is an image - ' . $check['mime'] . '.';
             $error = false;
         } else {
             $message = 'File is not an image.';
