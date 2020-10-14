@@ -23,7 +23,7 @@ class ImageImport
         $target_dir = $_SERVER['DOCUMENT_ROOT'] . '/images/';
         $target_file = $target_dir . basename($_FILES[$file]['tmp_name']);
         $error = false;
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $imageFileType = mime_content_type($_FILES[$file]['name']);
 
         $check = getimagesize($_FILES[$file]['tmp_name']);
         if ($check !== false) {
