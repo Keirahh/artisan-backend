@@ -24,10 +24,7 @@ class ImageImport
         $uniqId = $this->uniqId();
         $target_file = $target_dir . $uniqId;
         $error = false;
-        $imageFileType = mime_content_type ($_FILES[$file]['name']);
-
-        var_dump($imageFileType);
-        die();
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
         $check = getimagesize($_FILES[$file]['tmp_name']);
         if ($check !== false) {
@@ -60,7 +57,7 @@ class ImageImport
             throw new \Exception($message);
         } else {
             if (move_uploaded_file($_FILES[$file]['tmp_name'], $target_file)) {
-                return $uniqId;
+                return $target_file;
             }
         }
         return null;
