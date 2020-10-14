@@ -42,10 +42,10 @@ class ImageController extends ApiController
         $path = $uploader->upload('image');
         if ($path) {
             $img = $this->imageRepository->saveImage($path);
-            $rst = $this->imageRepository->findOneBy(['path' => $path]);
+//            $rst = $this->imageRepository->findOneBy(['path' => $path]);
             return new JsonResponse([
                 'status' => "Success",
-                'path' => json_decode($this->serializeDoctrineRaw($rst, "image"))
+                'path' => $path
             ], 200);
         }
 
