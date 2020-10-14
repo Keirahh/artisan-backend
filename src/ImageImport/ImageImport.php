@@ -21,9 +21,9 @@ class ImageImport
     public function upload($file)
     {
         $target_dir = $_SERVER['DOCUMENT_ROOT'] . '/images/';
-        $target_file = $target_dir . $this->uniqId();
+        $target_file = $target_dir . basename($_FILES[$file]['tmp_name']);
         $error = false;
-        $imageFileType = strtolower(pathinfo( basename($_FILES[$file]['tmp_name']), PATHINFO_EXTENSION));
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
         $check = getimagesize($_FILES[$file]['tmp_name']);
         if ($check !== false) {
