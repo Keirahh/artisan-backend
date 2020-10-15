@@ -113,9 +113,9 @@ class AdController extends ApiController
     }
 
     /**
-     * @Route("/myad", name="get_my_ad", methods={"GET"})
+     * @Route("/myAd", name="get_my_ad", methods={"GET"})
      */
-    public function getMyAds(): Response
+    public function getMyAd(): Response
     {
         $token = $_GET['token'];
         $user = $this->userRepository->findOneBy(['token' => $token]);
