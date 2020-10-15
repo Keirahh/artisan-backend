@@ -68,16 +68,20 @@ class AdController extends ApiController
         $user = $this->userRepository->findOneBy(['token' => $data['token']]);
         $location = $data['location'];
 
-        $ad = $this->adRepository->saveAd($title, $description, $user->getId(), $location);
+        if ($user) {
+            $ad = $this->adRepository->saveAd($title, $description, $user->getId(), $location);
 
-        if($data['path'])
-        {
-            $this->imageRepository->saveAdImage($data['path'], $ad);
+            if ($data['path']) {
+                $this->imageRepository->saveAdImage($data['path'], $ad);
+            }
+
+            return new JsonResponse([
+                'status' => "Success"
+            ], 200);
         }
-
         return new JsonResponse([
-            'status' => "Success"
-        ], 200);
+            'message' => 'no user found'
+        ], 400);
     }
 
     /**
@@ -108,6 +112,20 @@ class AdController extends ApiController
         return $this->serializeDoctrine($this->adRepository->findRecent(), 'ad');
     }
 
+    /**
+     * @Route("/myad", name="get_my_ad", methods={"GET"})
+     */
+    public function getMyAds(): Response
+    {
+        $token = $_GET['token'];
+        $user = $this->userRepository->findOneBy(['token' => $token]);
+        if ($user) {
+            return $this->serializeDoctrine($this->adRepository->findByUserId($user->getId()), 'ad');
+        }
+        return new JsonResponse([
+            'message' => 'no user found'
+        ], 400);
+    }
 
     /**
      * @Route("/{id}", name="get_ad", methods={"GET"})

@@ -41,6 +41,7 @@ class Ad
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ad")
+     * @Groups({"ad"})
      */
     private $user;
 

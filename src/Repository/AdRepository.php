@@ -22,7 +22,7 @@ class AdRepository extends ServiceEntityRepository
      * @var UserController
      */
     private $userController;
-        /**
+    /**
      * @var LocationController
      */
     private $locationController;
@@ -97,6 +97,20 @@ class AdRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @return int|mixed|string
+     */
+    public function findByUserId($id)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->andWhere('a.user = :val')
+            ->setParameter('val', $id)
+            ->orderBy('a.id', 'DESC')
+            ->setMaxResults(10);
+
+        return $qb->getQuery()->getResult();
+    }
     // /**
     //  * @return Ad[] Returns an array of Ad objects
     //  */
