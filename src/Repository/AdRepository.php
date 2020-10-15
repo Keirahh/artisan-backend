@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Controller\UserController;
 use App\Controller\LocationController;
 use App\Entity\Ad;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -58,7 +59,8 @@ class AdRepository extends ServiceEntityRepository
         $ad->setDescription($description);
         $ad->setUser($userEntity);
         $ad->setLocation($locationEntity);
-
+        $date = new DateTime(date('Y-m-d H:i'));
+        $ad->setCreatedAt($date);
         $this->_em->persist($ad);
         $this->_em->flush();
 
