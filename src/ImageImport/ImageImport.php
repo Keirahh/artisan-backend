@@ -11,7 +11,7 @@ class ImageImport
         $target_dir = $_SERVER['DOCUMENT_ROOT'] . '/images/';
         $target_file = $target_dir . basename($_FILES[$file]['tmp_name']);
         $error = false;
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+//        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
         $check = getimagesize($_FILES[$file]['tmp_name']);
         if ($check !== false) {
@@ -33,8 +33,11 @@ class ImageImport
             $error = true;
         }
 
-        // Allow certain file formats
-        if ($imageFileType != 'jpg' && $imageFileType != 'png' && $imageFileType != 'jpeg') {
+        $mime_type = mime_content_type($_FILES[$file]['tmp_name']);
+
+        // If you want to allow certain files
+        $allowed_file_types = ['image/png', 'image/jpeg'];
+        if (! in_array($mime_type, $allowed_file_types)) {
             $message = 'Sorry, only JPG, JPEG & PNG files are allowed.';
             $error = true;
         }
