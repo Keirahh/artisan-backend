@@ -44,12 +44,9 @@ class ImageRepository extends ServiceEntityRepository
 
     public function saveAdImage($path, $ad)
     {
-        $image = new Image();
-        $image
-            ->setAd($ad)
-            ->setPath($path);
+        $image = $this->findOneBy(['path' => $path]);
+        $image->setAd($ad);
 
-        $this->_em->persist($image);
         $this->_em->flush();
 
         return $image;

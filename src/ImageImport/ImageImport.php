@@ -27,6 +27,7 @@ class ImageImport
 
         $target_file = $target_dir . $this->uniqId();
 
+        $mime_type = mime_content_type($_FILES[$file]['tmp_name']);
         $error = false;
 
         $check = getimagesize($_FILES[$file]['tmp_name']);
@@ -48,8 +49,6 @@ class ImageImport
             $message = 'Sorry, your file is too large.';
             $error = true;
         }
-
-        $mime_type = mime_content_type($_FILES[$file]['tmp_name']);
 
         // If you want to allow certain files
         $allowed_file_types = ['image/png', 'image/jpeg'];
