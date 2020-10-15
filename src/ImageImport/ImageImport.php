@@ -38,12 +38,6 @@ class ImageImport
             $error = true;
         }
 
-        // Check if file already exists
-        if (file_exists($target_file)) {
-            $message = 'Sorry, file already exists.';
-            $error = true;
-        }
-
         // Check file size
         if ($_FILES[$file]['size'] > 500000) {
             $message = 'Sorry, your file is too large.';
@@ -55,6 +49,19 @@ class ImageImport
         if (!in_array($mime_type, $allowed_file_types)) {
             $message = 'Sorry, only JPG, JPEG & PNG files are allowed.';
             $error = true;
+        } else {
+            switch ($mime_type){
+                case 'image/png':
+                    $ext = '.png';
+                    break;
+                case 'image/jpeg':
+                    $ext = '.jpg';
+                    break;
+                default:
+                    break;
+            }
+
+            $target_file .= $ext;
         }
 
         // Check if $error is set to 0 by an error
