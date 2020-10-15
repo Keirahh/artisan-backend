@@ -2,16 +2,32 @@
 
 namespace App\ImageImport;
 
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ImageImport
 {
+
+    public function uniqId($length = 13)
+    {
+        if (function_exists("random_bytes")) {
+            $bytes = random_bytes(ceil($length / 2));
+        } elseif (function_exists("openssl_random_pseudo_bytes")) {
+            $bytes = openssl_random_pseudo_bytes(ceil($length / 2));
+        } else {
+            throw new Exception("no cryptographically secure random function available");
+        }
+        return substr(bin2hex($bytes), 0, $length);
+
+    }
+
     public function upload($file)
     {
         $target_dir = $_SERVER['DOCUMENT_ROOT'] . '/images/';
-        $target_file = $target_dir . basename($_FILES[$file]['tmp_name']);
+
+        $target_file = $target_dir . $this->uniqId();
+
         $error = false;
-//        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
         $check = getimagesize($_FILES[$file]['tmp_name']);
         if ($check !== false) {
@@ -37,7 +53,7 @@ class ImageImport
 
         // If you want to allow certain files
         $allowed_file_types = ['image/png', 'image/jpeg'];
-        if (! in_array($mime_type, $allowed_file_types)) {
+        if (!in_array($mime_type, $allowed_file_types)) {
             $message = 'Sorry, only JPG, JPEG & PNG files are allowed.';
             $error = true;
         }
