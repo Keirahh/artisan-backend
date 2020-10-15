@@ -25,7 +25,7 @@ class ImageImport
     {
         $target_dir = $_SERVER['DOCUMENT_ROOT'] . '/images/';
 
-        $target_file = $target_dir . $this->uniqId();
+        $target_file = $this->uniqId();
 
         $mime_type = mime_content_type($_FILES[$file]['tmp_name']);
         $error = false;
@@ -68,7 +68,8 @@ class ImageImport
         if ($error == true) {
             throw new \Exception($message);
         } else {
-            if (move_uploaded_file($_FILES[$file]['tmp_name'], $target_file)) {
+            $destination = $target_dir . $target_file;
+            if (move_uploaded_file($_FILES[$file]['tmp_name'], $destination)) {
                 return $target_file;
             }
         }
