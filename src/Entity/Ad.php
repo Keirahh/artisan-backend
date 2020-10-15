@@ -51,6 +51,12 @@ class Ad
      */
     private $location;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"ad"})
+     */
+    private $createdAt;
+
     public function __construct()
     {
         $this->image = new ArrayCollection();
@@ -136,6 +142,18 @@ class Ad
     public function setLocation(?Location $location): self
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\User;
 use App\Controller\LocationController;
 use App\Controller\RoleController;
+use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -75,7 +76,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setEmail($email);
         $user->setPassword($encodedPassword);
         $user->setRole($roleEntity);
-         
+        $date = new DateTime(date('Y-m-d H:i'));
         //Generate a random string.
         $token = openssl_random_pseudo_bytes(16);
          
@@ -83,7 +84,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $token = bin2hex($token);
          
         $user->setToken($token);
-
+        $user->setCreatedAt($date);
         try {
             $this->_em->persist($user);
             $this->_em->flush();
