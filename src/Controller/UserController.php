@@ -34,7 +34,7 @@ class UserController extends ApiController
      * @param ArtisanRepository $artisanRepository
      * @param SerializerInterface $serializer
      */
-    public function __construct(LocationController $locationController, UserRepository $userRepository, ArtisanRepository $artisanRepository , SerializerInterface $serializer)
+    public function __construct(LocationController $locationController, UserRepository $userRepository, ArtisanRepository $artisanRepository, SerializerInterface $serializer)
     {
         $this->locationController = $locationController;
         $this->userRepository = $userRepository;
@@ -42,8 +42,14 @@ class UserController extends ApiController
         parent::__construct($serializer);
     }
 
-   
     /**
+    @Doc\ApiDoc(
+     *     resource=true,
+     *     description="Get the list of all articles."
+     * )
+     */
+    /**
+     * …
      * @Route("/add", name="user_register", methods={"POST"})
      */
     public function addUser(Request $request)
@@ -61,7 +67,7 @@ class UserController extends ApiController
             }
 
             $firstName = $data["firstName"];
-	        $lastName = $data["lastName"];
+            $lastName = $data["lastName"];
             $birthdate = $data["birthdate"];
             $location = $data["location"];
             $email = $data["email"];
