@@ -59,7 +59,7 @@ class AdRepository extends ServiceEntityRepository
         $ad->setDescription($description);
         $ad->setUser($userEntity);
         $ad->setLocation($locationEntity);
-        $date = new DateTime(date('Y-m-d H:i'));
+        $date = new DateTime();
         $ad->setCreatedAt($date);
         $this->_em->persist($ad);
         $this->_em->flush();

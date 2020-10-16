@@ -7,6 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Utilities;
+
+use function App\Utilities\formatDate;
 
 /**
  * @ORM\Entity(repositoryClass=AdRepository::class)
@@ -189,12 +192,9 @@ class Ad
         return $this;
     }
 
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
+    public function getCreatedAt(): ?array
+    { 
+        return formatDate($this->createdAt);
     }
 
     /**

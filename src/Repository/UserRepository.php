@@ -76,7 +76,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setEmail($email);
         $user->setPassword($encodedPassword);
         $user->setRole($roleEntity);
-        $date = new DateTime(date('Y-m-d H:i'));
+        $date = new DateTime();
         //Generate a random string.
         $token = openssl_random_pseudo_bytes(16);
          

@@ -6,8 +6,12 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
+use App\Utilities;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+
+use function App\Utilities\formatDate;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -483,12 +487,9 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
+    public function getCreatedAt(): ?array
+    { 
+        return formatDate($this->createdAt);
     }
 
     /**
