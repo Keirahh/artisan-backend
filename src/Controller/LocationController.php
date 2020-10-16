@@ -14,8 +14,16 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class LocationController extends ApiController
 {
+    /**
+     * @var LocationRepository
+     */
     private $locationRepository;
 
+    /**
+     * LocationController constructor.
+     * @param LocationRepository $locationRepository
+     * @param SerializerInterface $serializer
+     */
     public function __construct(LocationRepository $locationRepository, SerializerInterface $serializer)
     {
         $this->locationRepository = $locationRepository;
@@ -50,6 +58,10 @@ class LocationController extends ApiController
     }
 
 
+    /**
+     * @param $id
+     * @return \App\Entity\Location|null
+     */
     public function getEntity($id)
     {
         return $this->locationRepository->find($id);

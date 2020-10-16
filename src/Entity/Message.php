@@ -40,22 +40,35 @@ class Message
      */
     private $users;
 
+    /**
+     * Message constructor.
+     */
     public function __construct()
     {
         $this->user = new ArrayCollection();
         $this->users = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return Conversation|null
+     */
     public function getConversation(): ?Conversation
     {
         return $this->conversation;
     }
 
+    /**
+     * @param Conversation|null $conversation
+     * @return $this
+     */
     public function setConversation(?Conversation $conversation): self
     {
         $this->conversation = $conversation;
@@ -63,11 +76,18 @@ class Message
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getContent(): ?string
     {
         return $this->content;
     }
 
+    /**
+     * @param string $content
+     * @return $this
+     */
     public function setContent(string $content): self
     {
         $this->content = $content;
@@ -75,11 +95,18 @@ class Message
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
     }
 
+    /**
+     * @param \DateTimeInterface $date
+     * @return $this
+     */
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
@@ -95,6 +122,10 @@ class Message
         return $this->users;
     }
 
+    /**
+     * @param User $user
+     * @return $this
+     */
     public function addUser(User $user): self
     {
         if (!$this->users->contains($user)) {
@@ -105,6 +136,10 @@ class Message
         return $this;
     }
 
+    /**
+     * @param User $user
+     * @return $this
+     */
     public function removeUser(User $user): self
     {
         if ($this->users->contains($user)) {

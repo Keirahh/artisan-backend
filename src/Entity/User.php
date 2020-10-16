@@ -113,6 +113,9 @@ class User implements UserInterface
      */
     private $createdAt;
 
+    /**
+     * User constructor.
+     */
     public function __construct()
     {
         $this->ad = new ArrayCollection();
@@ -120,16 +123,26 @@ class User implements UserInterface
         $this->message = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     * @return $this
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -159,6 +172,10 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     * @return $this
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -174,6 +191,10 @@ class User implements UserInterface
         return (string) $this->password;
     }
 
+    /**
+     * @param string $password
+     * @return $this
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -198,11 +219,18 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
+    /**
+     * @return string|null
+     */
     public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
+    /**
+     * @param string $firstName
+     * @return $this
+     */
     public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
@@ -210,11 +238,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
+    /**
+     * @param string $lastName
+     * @return $this
+     */
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
@@ -222,11 +257,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getBirthdate(): ?string
     {
         return $this->birthdate;
     }
 
+    /**
+     * @param string $birthdate
+     * @return $this
+     */
     public function setBirthdate(string $birthdate): self
     {
         $this->birthdate = $birthdate;
@@ -234,11 +276,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return Artisan|null
+     */
     public function getArtisan(): ?Artisan
     {
         return $this->artisan;
     }
 
+    /**
+     * @param Artisan|null $artisan
+     * @return $this
+     */
     public function setArtisan(?Artisan $artisan): self
     {
         $this->artisan = $artisan;
@@ -254,6 +303,10 @@ class User implements UserInterface
         return $this->ad;
     }
 
+    /**
+     * @param Ad $ad
+     * @return $this
+     */
     public function addAd(Ad $ad): self
     {
         if (!$this->ad->contains($ad)) {
@@ -264,6 +317,10 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Ad $ad
+     * @return $this
+     */
     public function removeAd(Ad $ad): self
     {
         if ($this->ad->contains($ad)) {
@@ -277,11 +334,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return Image|null
+     */
     public function getImage(): ?Image
     {
         return $this->image;
     }
 
+    /**
+     * @param Image|null $image
+     * @return $this
+     */
     public function setImage(?Image $image): self
     {
         $this->image = $image;
@@ -297,6 +361,10 @@ class User implements UserInterface
         return $this->conversation;
     }
 
+    /**
+     * @param Conversation $conversation
+     * @return $this
+     */
     public function addConversation(Conversation $conversation): self
     {
         if (!$this->conversation->contains($conversation)) {
@@ -307,6 +375,10 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Conversation $conversation
+     * @return $this
+     */
     public function removeConversation(Conversation $conversation): self
     {
         if ($this->conversation->contains($conversation)) {
@@ -328,6 +400,10 @@ class User implements UserInterface
         return $this->message;
     }
 
+    /**
+     * @param Message $message
+     * @return $this
+     */
     public function addMessage(Message $message): self
     {
         if (!$this->message->contains($message)) {
@@ -337,6 +413,10 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Message $message
+     * @return $this
+     */
     public function removeMessage(Message $message): self
     {
         if ($this->message->contains($message)) {
@@ -346,11 +426,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return Location|null
+     */
     public function getLocation(): ?Location
     {
         return $this->location;
     }
 
+    /**
+     * @param Location|null $location
+     * @return $this
+     */
     public function setLocation(?Location $location): self
     {
         $this->location = $location;
@@ -358,11 +445,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return Role|null
+     */
     public function getRole(): ?Role
     {
         return $this->role;
     }
 
+    /**
+     * @param Role|null $role
+     * @return $this
+     */
     public function setRole(?Role $role): self
     {
         $this->role = $role;
@@ -370,11 +464,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getToken(): ?string
     {
         return $this->token;
     }
 
+    /**
+     * @param string|null $token
+     * @return $this
+     */
     public function setToken(?string $token): self
     {
         $this->token = $token;
@@ -382,11 +483,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
+    /**
+     * @param \DateTimeInterface|null $createdAt
+     * @return $this
+     */
     public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;

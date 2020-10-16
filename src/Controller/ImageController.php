@@ -63,6 +63,10 @@ class ImageController extends ApiController
         return $this->serializeDoctrine($this->imageRepository->find($id), 'image');
     }
 
+    /**
+     * @param $id
+     * @return Image|null
+     */
     public function getEntity($id)
     {
         return $this->imageRepository->find($id);

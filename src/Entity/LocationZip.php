@@ -24,16 +24,26 @@ class LocationZip
      */
     private $zip;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getZip(): ?string
     {
         return $this->zip;
     }
 
+    /**
+     * @param string $zip
+     * @return $this
+     */
     public function setZip(string $zip): self
     {
         $this->zip = $zip;

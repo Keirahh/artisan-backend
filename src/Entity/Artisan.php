@@ -37,16 +37,26 @@ class Artisan
      */
     private $user;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return int|null
+     */
     public function getSiret(): ?int
     {
         return $this->siret;
     }
 
+    /**
+     * @param int $siret
+     * @return $this
+     */
     public function setSiret(int $siret): self
     {
         $this->siret = $siret;
@@ -54,11 +64,18 @@ class Artisan
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getActivity(): ?string
     {
         return $this->activity;
     }
 
+    /**
+     * @param string $activity
+     * @return $this
+     */
     public function setActivity(string $activity): self
     {
         $this->activity = $activity;
@@ -66,11 +83,18 @@ class Artisan
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCompany(): ?string
     {
         return $this->company;
     }
 
+    /**
+     * @param string $company
+     * @return $this
+     */
     public function setCompany(string $company): self
     {
         $this->company = $company;
@@ -78,11 +102,18 @@ class Artisan
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return $this
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;

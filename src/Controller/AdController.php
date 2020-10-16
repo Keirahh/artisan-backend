@@ -135,6 +135,10 @@ class AdController extends ApiController
         return $this->serializeDoctrine($this->adRepository->find($id), 'ad');
     }
 
+    /**
+     * @param $id
+     * @return \App\Entity\Ad|null
+     */
     public function getEntity($id)
     {
         return $this->adRepository->find($id);

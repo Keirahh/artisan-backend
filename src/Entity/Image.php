@@ -34,16 +34,26 @@ class Image
      */
     private $user;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPath(): ?string
     {
         return $this->path;
     }
 
+    /**
+     * @param string $path
+     * @return $this
+     */
     public function setPath(string $path): self
     {
         $this->path = $path;
@@ -51,11 +61,18 @@ class Image
         return $this;
     }
 
+    /**
+     * @return Ad|null
+     */
     public function getAd(): ?Ad
     {
         return $this->ad;
     }
 
+    /**
+     * @param Ad|null $ad
+     * @return $this
+     */
     public function setAd(?Ad $ad): self
     {
         $this->ad = $ad;
@@ -63,11 +80,18 @@ class Image
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return $this
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;

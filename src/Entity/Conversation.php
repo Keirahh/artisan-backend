@@ -29,11 +29,17 @@ class Conversation
      */
     private $user;
 
+    /**
+     * Conversation constructor.
+     */
     public function __construct()
     {
         $this->message = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
@@ -47,6 +53,10 @@ class Conversation
         return $this->message;
     }
 
+    /**
+     * @param Message $message
+     * @return $this
+     */
     public function addMessage(Message $message): self
     {
         if (!$this->message->contains($message)) {
@@ -57,6 +67,10 @@ class Conversation
         return $this;
     }
 
+    /**
+     * @param Message $message
+     * @return $this
+     */
     public function removeMessage(Message $message): self
     {
         if ($this->message->contains($message)) {
@@ -70,11 +84,18 @@ class Conversation
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return $this
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;

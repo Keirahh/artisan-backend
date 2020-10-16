@@ -10,13 +10,33 @@ use App\Repository\LocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class HomeController
+ * @package App\Controller
+ */
 class HomeController extends AbstractController
 {
 
+    /**
+     * @var \App\Controller\RoleController
+     */
     private $roleController;
+    /**
+     * @var EntityManagerInterface
+     */
     private $manager;
+    /**
+     * @var LocationRepository
+     */
     private $locationRepository;
 
+    /**
+     * HomeController constructor.
+     * @param $twig
+     * @param \App\Controller\RoleController $rolecontroller
+     * @param LocationRepository $locationRepository
+     * @param EntityManagerInterface $manager
+     */
     public function __construct($twig, RoleController $rolecontroller, LocationRepository $locationRepository, EntityManagerInterface $manager)
     {
         $this->manager = $manager;
@@ -24,6 +44,9 @@ class HomeController extends AbstractController
         $this->locationRepository = $locationRepository;
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function index()
     {
         $index = "Bonjour";

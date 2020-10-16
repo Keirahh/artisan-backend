@@ -117,6 +117,10 @@ class UserController extends ApiController
     }
 
 
+    /**
+     * @param $id
+     * @return \App\Entity\User|null
+     */
     public function getEntity($id)
     {
         return $this->userRepository->find($id);

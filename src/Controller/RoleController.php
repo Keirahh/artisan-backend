@@ -76,7 +76,10 @@ class RoleController extends ApiController
     }
 
 
-
+    /**
+     * @param $id
+     * @return \App\Entity\Role|null
+     */
     public function getEntity($id)
     {
         return $this->roleRepository->find($id);

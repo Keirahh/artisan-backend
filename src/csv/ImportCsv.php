@@ -10,15 +10,38 @@ use App\Entity\LocationZip;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
+/**
+ * Class ImportCsv
+ * @package App\csv
+ */
 class ImportCsv
 {
+    /**
+     * @var EntityManagerInterface
+     */
     private $manager;
+    /**
+     * @var
+     */
     private $zip_repo;
+    /**
+     * @var
+     */
     private $city_repo;
+    /**
+     * @var
+     */
     private $departement_repo;
+    /**
+     * @var
+     */
     private $region_repo;
 
 
+    /**
+     * ImportCsv constructor.
+     * @param EntityManagerInterface $manager
+     */
     public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
@@ -29,6 +52,12 @@ class ImportCsv
     }
 
 
+    /**
+     * @param $entity
+     * @param $value
+     * @return null
+     * @throws Exception
+     */
     private function getExisting($entity, $value)
     {
 
@@ -73,6 +102,10 @@ class ImportCsv
 
     }
 
+    /**
+     * @return int
+     * @throws Exception
+     */
     public function importCsv()
     {
         if (isset($_POST["import"])) 

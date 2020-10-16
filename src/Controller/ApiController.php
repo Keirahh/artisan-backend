@@ -7,11 +7,22 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 
 
+/**
+ * Class ApiController
+ * @package App\Controller
+ */
 class ApiController
 {
 
+    /**
+     * @var SerializerInterface
+     */
     private $serializer;
 
+    /**
+     * ApiController constructor.
+     * @param SerializerInterface $serializer
+     */
     public function __construct(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
@@ -87,6 +98,11 @@ class ApiController
         return $this->setStatusCode(401)->respondWithErrors($message);
     }
 
+    /**
+     * @param $entity
+     * @param $groups
+     * @return Response
+     */
     public function serializeDoctrine($entity, $groups)
     {
         $json = $this->serializeDoctrineRaw($entity, $groups);
@@ -95,6 +111,11 @@ class ApiController
         return $response;
     }
 
+    /**
+     * @param $entity
+     * @param $groups
+     * @return string
+     */
     public function serializeDoctrineRaw($entity, $groups)
     {
         $json = $this->serializer->serialize($entity, 'json', [

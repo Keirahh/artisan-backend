@@ -57,6 +57,9 @@ class Location
      */
     private $ads;
 
+    /**
+     * Location constructor.
+     */
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -64,16 +67,26 @@ class Location
     }
 
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return LocationZip|null
+     */
     public function getZip(): ?LocationZip
     {
         return $this->zip;
     }
 
+    /**
+     * @param LocationZip $zip
+     * @return $this
+     */
     public function setZip(LocationZip $zip): self
     {
         $this->zip = $zip;
@@ -81,11 +94,18 @@ class Location
         return $this;
     }
 
+    /**
+     * @return LocationRegion|null
+     */
     public function getRegion(): ?LocationRegion
     {
         return $this->region;
     }
 
+    /**
+     * @param LocationRegion $region
+     * @return $this
+     */
     public function setRegion(LocationRegion $region): self
     {
         $this->region = $region;
@@ -93,11 +113,18 @@ class Location
         return $this;
     }
 
+    /**
+     * @return LocationDepartement|null
+     */
     public function getDepartement(): ?LocationDepartement
     {
         return $this->departement;
     }
 
+    /**
+     * @param LocationDepartement $departement
+     * @return $this
+     */
     public function setDepartement(LocationDepartement $departement): self
     {
         $this->departement = $departement;
@@ -105,11 +132,18 @@ class Location
         return $this;
     }
 
+    /**
+     * @return LocationCity|null
+     */
     public function getCity(): ?LocationCity
     {
         return $this->city;
     }
 
+    /**
+     * @param LocationCity $city
+     * @return $this
+     */
     public function setCity(LocationCity $city): self
     {
         $this->city = $city;
@@ -125,6 +159,10 @@ class Location
         return $this->users;
     }
 
+    /**
+     * @param User $user
+     * @return $this
+     */
     public function addUser(User $user): self
     {
         if (!$this->users->contains($user)) {
@@ -135,6 +173,10 @@ class Location
         return $this;
     }
 
+    /**
+     * @param User $user
+     * @return $this
+     */
     public function removeUser(User $user): self
     {
         if ($this->users->contains($user)) {
@@ -156,6 +198,10 @@ class Location
         return $this->ads;
     }
 
+    /**
+     * @param Ad $ad
+     * @return $this
+     */
     public function addAd(Ad $ad): self
     {
         if (!$this->ads->contains($ad)) {
@@ -166,6 +212,10 @@ class Location
         return $this;
     }
 
+    /**
+     * @param Ad $ad
+     * @return $this
+     */
     public function removeAd(Ad $ad): self
     {
         if ($this->ads->contains($ad)) {

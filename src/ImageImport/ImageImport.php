@@ -5,9 +5,18 @@ namespace App\ImageImport;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class ImageImport
+ * @package App\ImageImport
+ */
 class ImageImport
 {
 
+    /**
+     * @param int $length
+     * @return false|string
+     * @throws Exception
+     */
     public function uniqId($length = 13)
     {
         if (function_exists("random_bytes")) {
@@ -21,6 +30,11 @@ class ImageImport
 
     }
 
+    /**
+     * @param $file
+     * @return false|string|null
+     * @throws Exception
+     */
     public function upload($file)
     {
         $target_dir = $_SERVER['DOCUMENT_ROOT'] . '/images/';
