@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Nelmio\ApiDocBundle\Annotation as Doc;
 
 /**
  * @Route("/api/user")
@@ -41,7 +42,7 @@ class UserController extends ApiController
         parent::__construct($serializer);
     }
 
-
+   
     /**
      * @Route("/add", name="user_register", methods={"POST"})
      */
