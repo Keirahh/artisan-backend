@@ -2,10 +2,13 @@
 
 namespace App\Utilities;
 
+/**
+ * @param $date
+ * @return array
+ */
 function formatDate($date)
 {
     $rst = [];
-    
 
     $rst['source'] = $date;
     $rst['day'] = $date->format('d');
@@ -14,6 +17,5 @@ function formatDate($date)
     $rst['hours'] = $date->format('H');
     $rst['minutes'] = $date->format('i');
     
-
     return $rst;
 }

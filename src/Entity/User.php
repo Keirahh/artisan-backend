@@ -487,6 +487,9 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return array|null
+     */
     public function getCreatedAt(): ?array
     { 
         return formatDate($this->createdAt);
