@@ -16,32 +16,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class HomeController extends AbstractController
 {
-
-    /**
-     * @var \App\Controller\RoleController
-     */
-    private $roleController;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-    /**
-     * @var LocationRepository
-     */
-    private $locationRepository;
-
     /**
      * HomeController constructor.
      * @param $twig
-     * @param \App\Controller\RoleController $rolecontroller
-     * @param LocationRepository $locationRepository
-     * @param EntityManagerInterface $manager
      */
-    public function __construct($twig, RoleController $rolecontroller, LocationRepository $locationRepository, EntityManagerInterface $manager)
+    public function __construct($twig)
     {
-        $this->manager = $manager;
-        $this->roleController = $rolecontroller;
-        $this->locationRepository = $locationRepository;
     }
 
     /**
@@ -50,18 +30,8 @@ class HomeController extends AbstractController
     public function index()
     {
         $index = "Bonjour";
-        if (isset($_POST)) {
-           // $importCsv = new ImportCsv($this->manager);
             return $this->render("pages/home.html.twig", array(
                 "title" => $index,
-                // "resultCsv" => $importCsv->importCsv(),
-                "Location" => $this->locationRepository->searchLocation('nic')
             ));
-        } else {
-            return $this->render("pages/home.html.twig", array(
-                "title" => $index,
-                "role" => json_decode($this->roleController->getRole(2)->getContent()),
-            ));
-        }
     }
 }
