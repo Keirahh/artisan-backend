@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
-
+use OpenApi\Annotations as OA;
 
 /**
  * @Route("/api/image")
@@ -34,6 +34,17 @@ class ImageController extends ApiController
     }
 
     /**
+     * Create image
+     * 
+     * It is necessary to have the identification token to be able to retrieve the image
+     * 
+     * @OA\Parameter(
+     *     name="path",
+     *     in="query",
+     *     description="The field used to set image",
+     *     @OA\Schema(type="file")
+     * )
+     * 
      * @Route("/add", name="add_image", methods={"POST"})
      */
     public function addImage(Request $request): JsonResponse
@@ -56,6 +67,8 @@ class ImageController extends ApiController
     }
 
     /**
+     * Get Image by Id
+     * 
      * @Route("/{id}", name="get_image", methods={"GET"})
      */
     public function getImage($id): Response

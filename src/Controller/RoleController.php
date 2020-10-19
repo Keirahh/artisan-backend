@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-
+use OpenApi\Annotations as OA;
 
 /**
  * @Route("/api/role")
@@ -31,8 +31,15 @@ class RoleController extends ApiController
         $this->roleRepository = $roleRepository;
         parent::__construct($serializer);
     }
-
     /**
+     * Create Role
+     * 
+     * @OA\Parameter(
+     *     name="name",
+     *     in="query",
+     *     description="The field used to set role",
+     *     @OA\Schema(type="string")
+     * )
      * @Route("/add", name="add_role", methods={"POST"})
      */
     public function addRole(Request $request): JsonResponse
@@ -60,6 +67,10 @@ class RoleController extends ApiController
     }
 
     /**
+     * Get all Roles
+     * 
+     * It is necessary to have the identification token to be able to retrieve the user
+     * 
      * @Route("/roles", name="get_roles", methods={"GET"})
      */
     public function getRoles(): Response
@@ -68,6 +79,10 @@ class RoleController extends ApiController
     }
 
     /**
+     * Get Role by Id
+     * 
+     * It is necessary to have the identification token to be able to retrieve the user
+     * 
      * @Route("/{id}", name="get_role", methods={"GET"})
      */
     public function getRole($id): Response

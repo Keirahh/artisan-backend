@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Nelmio\ApiDocBundle\Annotation as Doc;
+use OpenApi\Annotations as OA;
+use Nelmio\ApiDocBundle\Annotation\Model;
 
 /**
  * @Route("/api/user")
@@ -42,15 +43,60 @@ class UserController extends ApiController
         parent::__construct($serializer);
     }
 
+
     /**
-    @Doc\ApiDoc(
-     *     resource=true,
-     *     description="Get the list of all articles."
+     * Create User
+     * 
+     * @OA\Parameter(
+     *     name="firstName",
+     *      in="query",
+     *     description="The field used to set firstname",
+     *     @OA\Schema(type="string")
      * )
-     */
-    /**
-     * …
+     * @OA\Parameter(
+     *     name="lastName",
+     *     in="query",
+     *     description="The field used to set lastname",
+     *     @OA\Schema(type="string")
+     * )
+     * @OA\Parameter(
+     *     name="birthdate",
+     *     in="query",
+     *     description="The field used to set birthdate",
+     *     @OA\Schema(type="string")
+     * )
+     * @OA\Parameter(
+     *     name="location",
+     *     in="query",
+     *     description="The field used to set location",
+     *     @OA\Schema(type="int")
+     * )
+     * @OA\Parameter(
+     *     name="email",
+     *     in="query",
+     *     description="The field used to set email",
+     *     @OA\Schema(type="string")
+     * )
+     * @OA\Parameter(
+     *     name="password",
+     *     in="query",
+     *     description="The field used to set password",
+     *     @OA\Schema(type="string")
+     * )
+     * @OA\Parameter(
+     *     name="password_confirm",
+     *     in="query",
+     *     description="The field used to set password_confirm",
+     *     @OA\Schema(type="string")
+     * )
+     * @OA\Parameter(
+     *     name="role",
+     *     in="query",
+     *     description="The field used to set role",
+     *     @OA\Schema(type="int")
+     * )
      * @Route("/add", name="user_register", methods={"POST"})
+     * 
      */
     public function addUser(Request $request)
     {
@@ -114,8 +160,11 @@ class UserController extends ApiController
             ], 200);
         }
     }
-
     /**
+     * Get User by Id
+     * 
+     * It is necessary to have the identification token to be able to retrieve the user
+     * 
      * @Route("/{id}", name="get_user", methods={"GET"})
      */
     public function user($id): Response
@@ -134,6 +183,22 @@ class UserController extends ApiController
     }
 
     /**
+     * Get user by email and password
+     * 
+     * It is necessary to have the identification token to be able to retrieve the user
+     * 
+     * @OA\Parameter(
+     *     name="email",
+     *     in="query",
+     *     description="The field used to get user",
+     *     @OA\Schema(type="string")
+     * )
+     * @OA\Parameter(
+     *     name="password",
+     *     in="query",
+     *     description="The field used to get user",
+     *     @OA\Schema(type="string")
+     * )
      * @Route("/login", name="login", methods={"POST"})
      */
     public function login(Request $request, UserPasswordEncoderInterface $passwordEncoder)

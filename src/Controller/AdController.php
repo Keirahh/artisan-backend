@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-
+use OpenApi\Annotations as OA;
 
 /**
  * @Route("/api/ad")
@@ -49,6 +49,28 @@ class AdController extends ApiController
     }
 
     /**
+     * Create Ad
+     * 
+     * It is necessary to have the identification token to be able to retrieve the ad
+     * 
+     * @OA\Parameter(
+     *     name="title",
+     *     in="query",
+     *     description="The field used to set title",
+     *     @OA\Schema(type="string")
+     * )
+     * @OA\Parameter(
+     *     name="description",
+     *     in="query",
+     *     description="The field used to set description",
+     *     @OA\Schema(type="string")
+     * )
+     * @OA\Parameter(
+     *     name="location",
+     *     in="query",
+     *     description="The field used to set location",
+     *     @OA\Schema(type="int")
+     * )
      * @Route("/add", name="add_ad", methods={"POST"})
      */
     public function addAd(Request $request): JsonResponse
@@ -85,6 +107,8 @@ class AdController extends ApiController
     }
 
     /**
+     * Get ads by title
+     * 
      * @Route("/ads", name="get_ads", methods={"GET"})
      */
     public function getAds(): Response
@@ -105,6 +129,8 @@ class AdController extends ApiController
     }
 
     /**
+     * Get recent Ad
+     * 
      * @Route("/recent_ads", name="get_recent_ads", methods={"GET"})
      */
     public function getRecentAds(): Response
@@ -113,6 +139,8 @@ class AdController extends ApiController
     }
 
     /**
+     * Get Ad by User
+     * 
      * @Route("/myAd", name="get_my_ad", methods={"GET"})
      */
     public function getMyAd(): Response
@@ -128,6 +156,8 @@ class AdController extends ApiController
     }
 
     /**
+     * Get Ad by Id
+     * 
      * @Route("/{id}", name="get_ad", methods={"GET"})
      */
     public function getAd($id): Response
