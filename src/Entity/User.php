@@ -7,11 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
-use App\Utilities;
+use App\Utilities\FormatDate;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
-
-use function App\Utilities\formatDate;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -492,7 +490,8 @@ class User implements UserInterface
      */
     public function getCreatedAt(): ?array
     { 
-        return formatDate($this->createdAt);
+        $date = new FormatDate();
+        return $date->formatDate($this->createdAt);
     }
 
     /**
