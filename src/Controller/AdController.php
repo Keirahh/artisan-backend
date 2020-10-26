@@ -93,7 +93,7 @@ class AdController extends ApiController
         if ($user) {
             $ad = $this->adRepository->saveAd($title, $description, $user->getId(), $location);
 
-            if ($data['path']) {
+            if (array_key_exists('path', $data)) {
                 $this->imageRepository->saveAdImage($data['path'], $ad);
             }
 
